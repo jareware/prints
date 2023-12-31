@@ -4,7 +4,7 @@ use <../lib/roundedCube.scad>
 
 knobX = 7.2;
 knobY = 5.6;
-knobZ = 5;
+knobZ = 10;
 knobR = 1.5;
 knobDist = 67 - knobX * 2;
 mainX = knobX * 1.5;
@@ -12,7 +12,7 @@ mainY = knobY * 1.5;
 // mainZ = 285 / 3;
 mainZ = 25;
 mainR = 2;
-holeTolerance = .5;
+holeTolerance = .35;
 
 difference() {
   roundedCube(mainX, mainY, mainZ, r = mainR);
