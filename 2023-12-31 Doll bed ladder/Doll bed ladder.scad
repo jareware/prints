@@ -2,8 +2,8 @@ $fn = $preview ? 15 : 35;
 
 use <../lib/roundedCube.scad>
 
-knobX = 6.7;
-knobY = 5.1;
+knobX = 7;
+knobY = 5.4;
 knobZ = 10;
 knobR = $preview ? 0 : 1.5;
 knobDist = 67 - knobX; // i.e. between centers
@@ -18,19 +18,19 @@ shiftSpokeTilt = 21;
 
 for (x = [ knobDist ]) {
   translate([ x, 0, 0 ]) {
-    difference() {
-      union() {
-        // Main body bottom 3rd:
-        roundedCube(mainX, mainY, mainZ / 3, r = mainR);
+    // difference() {
+    //   union() {
+    //     // Main body bottom 3rd:
+    //     roundedCube(mainX, mainY, mainZ / 3, r = mainR);
 
-        // Lower spoke:
-        if (x == 0) roundedCube(knobDist + mainX, mainY, mainX, r = mainR);
-      }
+    //     // Lower spoke:
+    //     if (x == 0) roundedCube(knobDist + mainX, mainY, mainX, r = mainR);
+    //   }
 
-      // Bottom knob recepticle:
-      translate([ mainX / 2 - (knobX + holeTolerance) / 2, mainY / 2 - (knobY + holeTolerance) / 2, 0 ])
-      roundedCube((knobX + holeTolerance), (knobY + holeTolerance), (knobZ + holeTolerance), r = knobR, flatBottom = true, flatTop = true);
-    }
+    //   // Bottom knob recepticle:
+    //   translate([ mainX / 2 - (knobX + holeTolerance) / 2, mainY / 2 - (knobY + holeTolerance) / 2, 0 ])
+    //   roundedCube((knobX + holeTolerance), (knobY + holeTolerance), (knobZ + holeTolerance), r = knobR, flatBottom = true, flatTop = true);
+    // }
 
     // // Middle shifty bit:
     // hull() {
