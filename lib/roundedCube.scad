@@ -4,7 +4,9 @@ roundedCube(
   y = 20,
   z = 10,
   r = 3,
-  flatBottom = true
+  flatBottom = true,
+  centerX = true,
+  centerY = true
 );
 
 module roundedCube(
@@ -17,7 +19,10 @@ module roundedCube(
   flatLeft = false,
   flatRight = false,
   flatFront = false,
-  flatBack = false
+  flatBack = false,
+  centerX = false,
+  centerY = false,
+  centerZ = false
 ) {
   // Calculate [ x, y, z ] compensations based on requested flattenings:
   rX = r * (flatLeft && flatRight ? 0 : (flatLeft || flatRight ? 1 : 2));
@@ -29,6 +34,7 @@ module roundedCube(
   assert(y - rY > 0, "roundedCube() is too small along its y-axis");
   assert(z - rZ > 0, "roundedCube() is too small along its z-axis");
 
+  translate([ centerX ? x / -2 : 0, centerY ? y / -2 : 0, centerZ ? z / -2 : 0 ])
   if (r == 0) {
     // If there's no rounding, it's just a regular cube:
     cube([ x, y, z ]);
