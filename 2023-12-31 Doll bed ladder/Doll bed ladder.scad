@@ -17,6 +17,8 @@ shiftY = 15;
 shiftZ = 6;
 shiftSpokeTilt = 22;
 shiftSpokeTweak = -.5;
+topCutoutXY = 3;
+topCutoutZ = 20;
 
 for (x = [ 0, knobDist ]) {
   translate([ x, 0, 0 ]) {
@@ -50,9 +52,15 @@ for (x = [ 0, knobDist ]) {
       roundedCube(knobDist + mainX, mainY, mainX, r = mainR);
     }
 
-    // Main body top 3rd:
-    translate([ 0, shiftY, mainZ * 2/3 ])
-    roundedCube(mainX, mainY, mainZ / 3, r = mainR);
+    difference() {
+      // Main body top 3rd:
+      translate([ 0, shiftY, mainZ * 2/3 ])
+      roundedCube(mainX, mainY, mainZ / 3, r = mainR);
+
+      // Top cutouts:
+      translate([ x == 0 ? -topCutoutXY : mainX - topCutoutXY, shiftY - topCutoutXY, mainZ + knobZ - topCutoutZ ])
+      roundedCube(topCutoutXY * 2, topCutoutXY * 2, topCutoutZ, r = mainR);
+    }
 
     // Top knob:
     translate([ mainX / 2 - knobX / 2, mainY / 2 - knobY / 2 + shiftY, mainZ ])
