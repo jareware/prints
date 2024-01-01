@@ -62,8 +62,11 @@ for (x = [ 0, knobDist ]) {
       roundedCube(topCutoutXY * 2, topCutoutXY * 2, topCutoutZ, r = mainR);
     }
 
-    // Top knob:
+    // Special edition top knob for topmost copy:
     translate([ mainX / 2 - knobX / 2, mainY / 2 - knobY / 2 + shiftY, mainZ ])
-    roundedCube(knobX, knobY, knobZ, r = knobR, flatBottom = true);
+    roundedCube(knobX, knobY, knobZ - 1, r = knobR, flatBottom = true);
+    // Widened base:
+    translate([ mainX / 2 - knobX / 2 + (mainX - knobX) / -2, mainY / 2 - knobY / 2 + shiftY, mainZ - 3 ])
+    roundedCube(knobX + (mainX - knobX), knobY, 3 * 2, r = knobR, flatBottom = true);
   }
 }
