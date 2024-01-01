@@ -7,8 +7,8 @@ hingeMainH = 10;
 hingeToothR = 2;
 hingeToothH = 1;
 hingeCutout = 20;
-hingeToleranceR = .3;
-hingeToleranceZ = .3;
+hingeToleranceR = 1;
+hingeToleranceZ = 1;
 hingeArmThick = 2;
 hingeArmWidth = 30;
 hingeArmLength = 40;
@@ -18,7 +18,7 @@ hinge();
 
 module hinge() {
   hingeInner();
-  hingeOuter();
+  // hingeOuter();
 }
 
 module hingeInner() {
