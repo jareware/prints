@@ -1,6 +1,7 @@
 $fn = $preview ? 25 : 75;
 
 use <clip.scad>
+use <../lib/roundedCube.scad>
 
 magic = 0.01;
 clipX = 3.5; // so that offsetX of 0 ends up in top left corner
@@ -28,16 +29,7 @@ module mount(width = 40, height = 20, thickness = 2, offsetX = 0, offsetY = 0, c
 }
 
 module mountPlate(width, height, thickness) {
-  hull() {
-    translate([ (width - mountRounding * 2) / -2, (height - mountRounding * 2) / -2, 0 ])
-    cylinder(r = mountRounding, h = thickness);
-    translate([ (width - mountRounding * 2) / 2, (height - mountRounding * 2) / 2, 0 ])
-    cylinder(r = mountRounding, h = thickness);
-    translate([ (width - mountRounding * 2) / -2, (height - mountRounding * 2) / 2, 0 ])
-    cylinder(r = mountRounding, h = thickness);
-    translate([ (width - mountRounding * 2) / 2, (height - mountRounding * 2) / -2, 0 ])
-    cylinder(r = mountRounding, h = thickness);
-  }
+  roundedCube(width, height, thickness, r = mountRounding, flatTop = true, flatBottom = true, centerX = true, centerY = true);
 }
 
 module mountClips(clipRowsCols) {
