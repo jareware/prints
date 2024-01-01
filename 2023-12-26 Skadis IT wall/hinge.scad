@@ -1,7 +1,7 @@
 $fn = $preview ? 35 : 100;
 
-use <mount.scad>
 use <../lib/threads.scad>;
+use <mount.scad>
 
 PLATE_DISTANCE = 120;
 
@@ -20,7 +20,7 @@ hingeArmLength = 60;
 hingeMountWidth = 44;
 hingeMountHeight = 50;
 
-threadPitch = 10; // TODO
+threadPitch = 10; // TODO: Better name
 
 // // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
@@ -28,7 +28,7 @@ threadPitch = 10; // TODO
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more relaistic render
 
-hinge(renderOuter = true);
+hinge(renderInner = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -156,41 +156,36 @@ module screwHoles() {
   screwHole();
 }
 
+hingeHubcap();
+module hingeHubcap() {
+  hubcapH = hingeMainH - 1; // shorten the thread a bit
+  difference() {
+    union() {
+      ScrewThread(hingeMainD - hingeMainThick * 2, hubcapH + hingeToleranceZ,
+        pitch = ThreadPitch(threadPitch),
+        tip_height = ThreadPitch(threadPitch),
+        tip_min_fract = 0.75
+      );
 
+      translate([ 0, 0, hubcapH ])
+      cylinder(d = hingeMainD + hingeMainThick * 2, h = hingeArmThick);
+    }
 
+    cylinder(d = hingeMainD - hingeMainThick * 4, h = hubcapH * 2);
+  }
 
+  intersection() {
+    cylinder(d = hingeMainD - hingeMainThick * 4, h = hubcapH * 2);
 
-
-
-
-
-
-
-
-
-
-// threadDiameter = hingeMainD;
-// threadPitch = 10;
-// threadLength = 10;
-// thickness = 10;
-// length = 40;
-// flatten = 6;
-// bulge = thickness * 1.3;
-// space = 3;
-
-// difference() {
-//   ScrewThread(threadDiameter, threadLength,
-//     pitch = ThreadPitch(threadPitch),
-//     tip_height = ThreadPitch(threadPitch),
-//     tip_min_fract = 0.75);
-
-//   cube([ threadDiameter * .55, threadDiameter * .55, threadLength * 3 ], center = true);
-//   rotate([ 0, 0, 45 ])
-//   cube([ threadDiameter * .55, threadDiameter * .55, threadLength * 3 ], center = true);
-// }
-
-// !ScrewHole(threadDiameter, threadLength, pitch = ThreadPitch(threadPitch)) {
-//   cylinder(h = threadLength, d = hingeMainD + hingeMainThick);
-//   translate([ 0, 0, threadLength / 2 ])
-//   cube([ hingeMainD + 10, 10, threadLength ], center = true);
-// }
+    handleX = 7;
+    handleY = 7;
+    handleZ = 5;
+    union() {
+      translate([ handleX / -2 + hingeMainD / 2 - handleX, handleY / -2, hubcapH + hingeArmThick - handleZ ])
+      cube([ handleX, handleY, handleZ ]);
+      mirror([ 1, 0, 0 ])
+      translate([ handleX / -2 + hingeMainD / 2 - handleX, handleY / -2, hubcapH + hingeArmThick - handleZ ])
+      cube([ handleX, handleY, handleZ ]);
+    }
+  }
+}
