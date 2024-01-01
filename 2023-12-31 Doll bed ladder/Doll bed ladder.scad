@@ -45,7 +45,8 @@ for (x = [ 0, knobDist ]) {
 
     // Middle spoke:
     if (x == 0) {
-      translate([ 0, shiftY, mainZ - mainX * 1.2 ])
+      translate([ 0, shiftY / 2 + shiftSpokeTweak, mainZ / 2 ])
+      rotate([ -shiftSpokeTilt, 0, 0 ])
       roundedCube(knobDist + mainX, mainY, mainX, r = mainR);
     }
 
