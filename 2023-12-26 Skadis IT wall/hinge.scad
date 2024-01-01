@@ -1,6 +1,7 @@
 $fn = $preview ? 35 : 100;
 
 use <mount.scad>
+use <../lib/threads.scad>;
 
 PLATE_DISTANCE = 120;
 
@@ -10,7 +11,6 @@ hingeMainThick = 2.5;
 hingeMainH = 10;
 hingeToothR = 1.5;
 hingeToothH = 1;
-hingeCutout = 18;
 hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
 hingeToleranceZ = .8;
 hingeArmThick = 3;
@@ -26,7 +26,7 @@ hingeMountHeight = 50;
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more relaistic render
 
-hinge(renderInner = true);
+// hinge(renderInner = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -67,10 +67,6 @@ module hingeInner() {
 
       // Center big dead space:
       cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 2);
-
-      // Cutouts:
-      cube([ hingeCutout, hingeMainD * 2, hingeMainD * 1 ], center = true);
-      cube([ hingeMainD * 2, hingeCutout, hingeMainD * 1 ], center = true);
     }
 
     difference() {
@@ -168,4 +164,43 @@ module screwHoles() {
   translate([ 15 - magic, hingeArmWidth * -.35, 0 ])
   rotate([ 0, -90, 0 ])
   screwHole();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+threadDiameter = hingeMainD;
+threadPitch = 10;
+threadLength = 10;
+thickness = 10;
+length = 40;
+flatten = 6;
+bulge = thickness * 1.3;
+space = 3;
+
+difference() {
+  ScrewThread(threadDiameter, threadLength,
+    pitch = ThreadPitch(threadPitch),
+    tip_height = ThreadPitch(threadPitch),
+    tip_min_fract = 0.75);
+
+  cube([ threadDiameter * .55, threadDiameter * .55, threadLength * 3 ], center = true);
+  rotate([ 0, 0, 45 ])
+  cube([ threadDiameter * .55, threadDiameter * .55, threadLength * 3 ], center = true);
+}
+
+!ScrewHole(threadDiameter, threadLength, pitch = ThreadPitch(threadPitch)) {
+  cylinder(h = threadLength, d = hingeMainD + hingeMainThick);
+  translate([ 0, 0, threadLength / 2 ])
+  cube([ hingeMainD + 10, 10, threadLength ], center = true);
 }
