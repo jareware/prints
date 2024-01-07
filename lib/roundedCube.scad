@@ -30,9 +30,9 @@ module roundedCube(
   rZ = r * (flatTop && flatBottom ? 0 : (flatTop || flatBottom ? 1 : 2));
 
   // Do some sanity checks:
-  assert(x - rX > 0, "roundedCube() is too small along its x-axis");
-  assert(y - rY > 0, "roundedCube() is too small along its y-axis");
-  assert(z - rZ > 0, "roundedCube() is too small along its z-axis");
+  assert(x - rX >= 0, "roundedCube() is too small along its x-axis");
+  assert(y - rY >= 0, "roundedCube() is too small along its y-axis");
+  assert(z - rZ >= 0, "roundedCube() is too small along its z-axis");
 
   translate([ centerX ? x / -2 : 0, centerY ? y / -2 : 0, centerZ ? z / -2 : 0 ])
   if (r == 0) {
