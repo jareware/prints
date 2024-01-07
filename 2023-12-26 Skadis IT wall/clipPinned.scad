@@ -3,14 +3,14 @@ $fn = $preview ? 15 : 50;
 use <../lib/roundedCube.scad>
 
 magic = 0.01;
-clipX = 5 - .3;
-clipY = 15 - .3;
+clipX = 5 - .2;
+clipY = 15 - .2;
 clipH1 = 5.3; // i.e. IKEA Skådis plate thickness
-clipH2 = 8; // i.e. height above plate
-clipHoleD = clipX;
+clipH2 = 9; // i.e. height above plate
+clipHoleD = clipY * .5;
 clipHoleRaise = 2;
-clipTolerance = .5;
-clipPinLength = clipY;
+clipTolerance = .4;
+clipPinLength = 18;
 pinRightFinY = clipHoleD * .75;
 
 // Sample:
@@ -30,9 +30,9 @@ module clipPinned() {
     cylinder(h = clipPinLength, d = clipHoleD + clipTolerance);
   }
 
-  if ($preview)
-  #translate([ clipX / -2, clipY / -2, 0 ])
-  cube([ clipX, clipY, clipH1 + clipTolerance ]);
+  // if ($preview)
+  // #translate([ clipX / -2, clipY / -2, 0 ])
+  // cube([ clipX, clipY, clipH1 + clipTolerance ]);
 }
 
 module clipPinnedPin() {
@@ -60,6 +60,6 @@ module clipPinnedPin() {
     cube([ clipPinLength, clipY, clipH1 + clipTolerance ]);
   }
 
-  if ($preview)
-  #roundedCube(clipX, clipY, clipH1 + clipH2, centerX = true, centerY = true);
+  // if ($preview)
+  // #roundedCube(clipX, clipY, clipH1 + clipH2, centerX = true, centerY = true);
 }
