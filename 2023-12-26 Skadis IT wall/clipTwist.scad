@@ -14,9 +14,21 @@ clipSupportX = .5;
 clipSupportY = -.3;
 
 // Sample:
-translate([ -5, -10, -4 ])
-cube([ 10, 20, 4 ]);
-clipTwist();
+translate([ 8 / -2, 18 / -2, -3 ])
+cube([ 8, 18, 3 ]);
+difference() {
+  clipTwistBody();
+  clipTwistPin();
+}
+translate([ 15, 0, 0 ]) {
+  translate([ 5 / -2, 10 / -2, -3 ])
+  cube([ 5, 10, 3 ]);
+
+  translate([ 0, 0, 9.2 ])
+  rotate([ 0, 180, 0 ])
+  clipTwistPin();
+}
+
 
 module clipTwist() {
   color("Chocolate") { // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#color
@@ -53,7 +65,6 @@ module clipTwist() {
 
 
 module clipTwistBody(height = clipH) {
-  // Default plug:
   hull() {
     translate([ 0, (clipY - clipX) / 2, 0 ])
     cylinder(d = clipX, h = height);
@@ -61,3 +72,20 @@ module clipTwistBody(height = clipH) {
     cylinder(d = clipX, h = height);
   }
 }
+
+pinThickness = clipX * .6;
+pinThicknessBottom = pinThickness * 1.1;
+module clipTwistPin() {
+  hull() {
+    translate([ 0, 0, pinThickness / 2 ])
+    sphere(d = pinThickness);
+
+    translate([ 0, 0, clipH * 2 ])
+    sphere(d = pinThickness);
+  }
+
+  translate([ 0, 0, clipH / 2 ])
+  resize([ pinThicknessBottom, pinThicknessBottom, clipH ])
+  sphere(d = 1);
+}
+
