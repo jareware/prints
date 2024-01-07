@@ -1,4 +1,4 @@
-$fn = $preview ? 35 : 100;
+$fn = $preview ? 50 : 100;
 
 use <mount.scad>
 
@@ -14,9 +14,9 @@ hingeCutout = 18;
 hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
 hingeToleranceZ = .8;
 hingeArmThick = 6;
-hingeArmThickExtra = 0;
 hingeArmWidth = 25;
-hingeArmLength = 60;
+// hingeArmLength = 60;
+hingeArmLength = 35;
 hingeMountWidth = 44;
 hingeMountHeight = 35;
 
@@ -53,8 +53,8 @@ module hinge(leftHandSide = true, renderInner = false, renderOuter = false, rend
 module hingeInner() {
   color("SeaGreen") { // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#color
     difference() {
-      // Top clips:
       union() {
+        // Top clips:
         cylinder(d = hingeMainD - hingeToleranceR, h = hingeMainH + hingeToleranceZ);
         hull() {
           translate([ 0, 0, hingeMainH + hingeToleranceZ ])
@@ -62,37 +62,28 @@ module hingeInner() {
           translate([ 0, 0, hingeMainH + hingeToleranceZ + hingeToothH ])
           cylinder(d = hingeMainD, h = hingeToothH);
         }
-      }
 
-      // Center big dead space:
-      cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 2);
-
-      // Cutouts:
-      cube([ hingeCutout, hingeMainD * 2, hingeMainD * 1 ], center = true);
-      cube([ hingeMainD * 2, hingeCutout, hingeMainD * 1 ], center = true);
-    }
-
-    difference() {
-      union() {
         // Bottom plate:
         translate([ 0, 0, -hingeArmThick ])
         cylinder(d = hingeMainD + hingeMainThick * 2, h = hingeArmThick);
 
         // Arm:
         translate([ -hingeArmLength + hingeArmThick, hingeArmWidth / -2, -hingeArmThick ])
-        cube([ hingeArmLength - hingeArmThick, hingeArmWidth, hingeArmThick + hingeArmThickExtra ]);
+        cube([ hingeArmLength - hingeArmThick, hingeArmWidth, hingeArmThick ]);
       }
 
-      // Bottom plate dead space:
-      #translate([ 0, 0, -hingeArmThick - magic ])
-      cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 2);
+      // Center big dead space:
+      translate([ 0, 0, -hingeArmThick - magic ])
+      cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 3);
 
-      // Arm extra dead space:
-      translate([ 0, 0, -hingeArmThick - magic + hingeArmThick ])
-      cylinder(d = hingeMainD + hingeMainThick * 2 + hingeToleranceR, h = hingeMainH * 2);
+      // Clip cutouts:
+      translate([ 0, 0, hingeMainD / 2 ]) {
+        cube([ hingeCutout, hingeMainD * 1.5, hingeMainD ], center = true);
+        cube([ hingeMainD * 1.5, hingeCutout, hingeMainD ], center = true);
+      }
 
       // Screw holes:
-      translate([ -hingeArmLength, 0, hingeArmThick / -2 + hingeArmThickExtra / 2 ])
+      translate([ -hingeArmLength, 0, hingeArmThick / -2 ])
       screwHoles();
     }
   }
@@ -107,7 +98,7 @@ module hingeOuter() {
 
         // Arm:
         translate([ 0, hingeArmWidth / -2, 0 ])
-        cube([ hingeArmLength - hingeArmThick, hingeArmWidth, hingeArmThick + hingeArmThickExtra ]);
+        cube([ hingeArmLength - hingeArmThick, hingeArmWidth, hingeArmThick ]);
       }
 
       // Center big dead space:
@@ -115,7 +106,7 @@ module hingeOuter() {
       cylinder(d = hingeMainD, h = hingeMainH + magic * 2);
 
       // Screw holes:
-      translate([ hingeArmLength, 0, (hingeArmThick + hingeArmThickExtra) / 2 ])
+      translate([ hingeArmLength, 0, hingeArmThick / 2 ])
       rotate([ 0, 180, 0 ])
       screwHoles();
     }
@@ -141,8 +132,8 @@ module hingeMount(positionScrewsForOuter = false) {
 
     translate([ -hingeArmThick, 0,
       positionScrewsForOuter
-        ? (hingeArmThick + hingeArmThickExtra) / 2
-        : hingeArmThick / -2 + hingeArmThickExtra / 2
+        ? hingeArmThick / 2
+        : hingeArmThick / -2
     ])
     screwHoles();
   }
