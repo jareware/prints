@@ -1,6 +1,6 @@
 $fn = $preview ? 25 : 75;
 
-use <clip.scad>
+use <clipPinned.scad>
 use <../lib/roundedCube.scad>
 
 magic = 0.01;
@@ -39,7 +39,7 @@ module mountClips(clipRowsCols) {
       for (x = [0 : len(clipRowsCols[y]) - 1]) {
         if (clipRowsCols[y][x]) {
           translate([ x * clipDistanceX + (y % 2 == 1 ? clipDistanceX / -2 : 0), y * clipDistanceY, 0 ])
-          clip();
+          clipPinned();
         }
       }
     }

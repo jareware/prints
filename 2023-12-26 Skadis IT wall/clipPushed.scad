@@ -15,24 +15,24 @@ clipTopExtra2 = 3;
 // Sample:
 translate([ -5, -10, -4 ])
 cube([ 10, 20, 4 ]);
-clip();
+clipPushed();
 
-module clip() {
+module clipPushed() {
   color("Chocolate") // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#color
   difference() {
     union() {
-      clipLayer(clipH, 0); // main body
+      clipPushedLayer(clipH, 0); // main body
       hull() { // top extra
-        translate([ 0, 0, clipH ]) clipLayer(clipTopExtra1);
-        translate([ 0, 0, clipH + clipTopExtra1 ]) clipLayer(clipTopExtra2, -clipToothR);
+        translate([ 0, 0, clipH ]) clipPushedLayer(clipTopExtra1);
+        translate([ 0, 0, clipH + clipTopExtra1 ]) clipPushedLayer(clipTopExtra2, -clipToothR);
       }
       hull() { // root
-        translate([ 0, 0, 0 ]) clipLayer(magic);
-        translate([ 0, 0, clipZRound ]) clipLayer(magic, 0);
+        translate([ 0, 0, 0 ]) clipPushedLayer(magic);
+        translate([ 0, 0, clipZRound ]) clipPushedLayer(magic, 0);
       }
       hull() { // opposite
-        translate([ 0, 0, clipH - clipZRound ]) clipLayer(magic, 0);
-        translate([ 0, 0, clipH ]) clipLayer(magic);
+        translate([ 0, 0, clipH - clipZRound ]) clipPushedLayer(magic, 0);
+        translate([ 0, 0, clipH ]) clipPushedLayer(magic);
       }
     }
     hull() { // split space
@@ -44,7 +44,7 @@ module clip() {
   }
 }
 
-module clipLayer(layerH = clipH, extraX = clipToothR) {
+module clipPushedLayer(layerH = clipH, extraX = clipToothR) {
   hull() {
     translate([ 0, (clipY - clipX) / 2 - extraX, 0 ])
     cylinder(d = clipX + extraX * 2, h = layerH);
