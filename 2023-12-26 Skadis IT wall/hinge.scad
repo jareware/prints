@@ -7,25 +7,25 @@ PLATE_DISTANCE = 120;
 magic = 0.1;
 hingeMainD = 45;
 hingeMainThick = 2.5;
-hingeMainH = 10;
+hingeMainH = 6;
 hingeToothR = 1.5;
 hingeToothH = 1;
 hingeCutout = 18;
 hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
 hingeToleranceZ = .8;
-hingeArmThick = 3;
-hingeArmThickExtra = 5;
+hingeArmThick = 6;
+hingeArmThickExtra = 0;
 hingeArmWidth = 25;
 hingeArmLength = 60;
 hingeMountWidth = 44;
-hingeMountHeight = 50;
+hingeMountHeight = 35;
 
 // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true, renderOuter = true, renderInnerMount = true, renderOuterMount = true);
+hinge(renderInner = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -84,7 +84,7 @@ module hingeInner() {
       }
 
       // Bottom plate dead space:
-      translate([ 0, 0, -hingeArmThick - magic ])
+      #translate([ 0, 0, -hingeArmThick - magic ])
       cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 2);
 
       // Arm extra dead space:
@@ -123,7 +123,7 @@ module hingeOuter() {
 }
 
 module hingeMount(positionScrewsForOuter = false) {
-  raise = 11; // arbitrary tweak so that screwholes down collide with clips
+  raise = 2.5; // arbitrary tweak so that screwholes down collide with clips
   difference() {
     rotate([ 0, -90, 0 ])
     translate([ raise, 0, 0 ])
@@ -135,7 +135,7 @@ module hingeMount(positionScrewsForOuter = false) {
       offsetY = 7,
       clipRowsCols = [
         [true],
-        [true, true],
+        [true],
       ]
     );
 
