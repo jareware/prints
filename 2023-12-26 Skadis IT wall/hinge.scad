@@ -1,34 +1,31 @@
 $fn = $preview ? 35 : 100;
 
-use <../lib/threads.scad>;
 use <mount.scad>
 
 PLATE_DISTANCE = 120;
 
 magic = 0.1;
-hingeMainD = 35;
+hingeMainD = 45;
 hingeMainThick = 2.5;
-hingeMainH = 7;
+hingeMainH = 10;
 hingeToothR = 1.5;
 hingeToothH = 1;
+hingeCutout = 18;
 hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
 hingeToleranceZ = .8;
 hingeArmThick = 3;
-hingeArmThickExtra = 4;
+hingeArmThickExtra = 5;
 hingeArmWidth = 25;
 hingeArmLength = 60;
 hingeMountWidth = 44;
 hingeMountHeight = 50;
 
-threadPitch = 10; // TODO: Better name
-
-// // Plate distance sanity check:
+// Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
 // Sample:
-// rotate([ -90, 0, 0 ]) // for a more relaistic render
-
-hinge(renderInner = true);
+// rotate([ -90, 0, 0 ]) // for a more realistic render
+hinge(renderInner = true, renderOuter = true, renderInnerMount = true, renderOuterMount = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -55,8 +52,24 @@ module hinge(leftHandSide = true, renderInner = false, renderOuter = false, rend
 
 module hingeInner() {
   color("SeaGreen") { // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#color
-    ScrewHole(hingeMainD - hingeMainThick * 2, hingeMainH + hingeToleranceZ, pitch = ThreadPitch(threadPitch)) {
-      cylinder(d = hingeMainD - hingeToleranceR, h = hingeMainH + hingeToleranceZ);
+    difference() {
+      // Top clips:
+      union() {
+        cylinder(d = hingeMainD - hingeToleranceR, h = hingeMainH + hingeToleranceZ);
+        hull() {
+          translate([ 0, 0, hingeMainH + hingeToleranceZ ])
+          cylinder(d = hingeMainD + hingeToothR * 2, h = hingeToothH);
+          translate([ 0, 0, hingeMainH + hingeToleranceZ + hingeToothH ])
+          cylinder(d = hingeMainD, h = hingeToothH);
+        }
+      }
+
+      // Center big dead space:
+      cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeMainH * 2);
+
+      // Cutouts:
+      cube([ hingeCutout, hingeMainD * 2, hingeMainD * 1 ], center = true);
+      cube([ hingeMainD * 2, hingeCutout, hingeMainD * 1 ], center = true);
     }
 
     difference() {
@@ -154,38 +167,4 @@ module screwHoles() {
   translate([ 15 - magic, hingeArmWidth * -.35, 0 ])
   rotate([ 0, -90, 0 ])
   screwHole();
-}
-
-hingeHubcap();
-module hingeHubcap() {
-  hubcapH = hingeMainH - 1; // shorten the thread a bit
-  difference() {
-    union() {
-      ScrewThread(hingeMainD - hingeMainThick * 2, hubcapH + hingeToleranceZ,
-        pitch = ThreadPitch(threadPitch),
-        tip_height = ThreadPitch(threadPitch),
-        tip_min_fract = 0.75
-      );
-
-      translate([ 0, 0, hubcapH ])
-      cylinder(d = hingeMainD + hingeMainThick * 2, h = hingeArmThick);
-    }
-
-    cylinder(d = hingeMainD - hingeMainThick * 4, h = hubcapH * 2);
-  }
-
-  intersection() {
-    cylinder(d = hingeMainD - hingeMainThick * 4, h = hubcapH * 2);
-
-    handleX = 7;
-    handleY = 7;
-    handleZ = 5;
-    union() {
-      translate([ handleX / -2 + hingeMainD / 2 - handleX, handleY / -2, hubcapH + hingeArmThick - handleZ ])
-      cube([ handleX, handleY, handleZ ]);
-      mirror([ 1, 0, 0 ])
-      translate([ handleX / -2 + hingeMainD / 2 - handleX, handleY / -2, hubcapH + hingeArmThick - handleZ ])
-      cube([ handleX, handleY, handleZ ]);
-    }
-  }
 }
