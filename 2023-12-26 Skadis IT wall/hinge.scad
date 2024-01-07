@@ -7,13 +7,13 @@ PLATE_DISTANCE = 120;
 magic = 0.1;
 hingeMainD = 45;
 hingeMainThick = 2.5;
-hingeMainH = 6;
-hingeToothR = 1.5;
-hingeToothH = 1;
+hingeMainH = 10;
+hingeToothR = 1;
+hingeToothH = 1.5;
 hingeCutout = 18;
 hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
 hingeToleranceZ = .8;
-hingeArmThick = 6;
+hingeArmThick = 4;
 hingeArmWidth = 25;
 // hingeArmLength = 60;
 hingeArmLength = 35;
@@ -25,7 +25,7 @@ hingeMountHeight = 35;
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true);
+hinge(renderInner = true, renderOuter = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
