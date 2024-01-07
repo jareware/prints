@@ -13,18 +13,19 @@ hingeToothH = 2;
 hingeCutout = 16;
 hingeToleranceR = .8;
 hingeToleranceZ = .8;
-hingeArmThick = 3; // TODO: Prod value: hingeMainH
+hingeArmThick = hingeMainH; // Prod value: hingeMainH
 hingeArmWidth = 25;
-hingeArmLength = 35; // TODO: Prod value: 60
+hingeArmLength = 65; // Prod value: 65
 hingeMountWidth = 44;
-hingeMountHeight = 35;
+hingeMountHeight = 30;
+hingeMountThick = 3;
 
 // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true, renderOuter = false);
+hinge(renderInner = true, renderOuter = true, renderInnerMount = true, renderOuterMount = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -33,7 +34,7 @@ module hinge(leftHandSide = true, renderInner = false, renderOuter = false, rend
     }
 
     if (renderInnerMount) {
-      translate([ PLATE_DISTANCE / -2 + hingeArmThick, 0, 0 ])
+      translate([ PLATE_DISTANCE / -2 + hingeMountThick, 0, 0 ])
       hingeMount(false);
     }
 
@@ -43,7 +44,7 @@ module hinge(leftHandSide = true, renderInner = false, renderOuter = false, rend
 
     if (renderOuterMount) {
       mirror([ 1, 0, 0 ])
-      translate([ PLATE_DISTANCE / -2 + hingeArmThick, 0, 0 ])
+      translate([ PLATE_DISTANCE / -2 + hingeMountThick, 0, 0 ])
       hingeMount(true);
     }
   }
@@ -113,14 +114,14 @@ module hingeOuter() {
 }
 
 module hingeMount(positionScrewsForOuter = false) {
-  raise = 2.5; // arbitrary tweak so that screwholes down collide with clips
+  raise = 0; // arbitrary tweak so that screwholes down collide with clips
   difference() {
     rotate([ 0, -90, 0 ])
     translate([ raise, 0, 0 ])
     mount(
       width = hingeMountHeight, // yes, swapped intentionally
       height = hingeMountWidth,
-      thickness = hingeArmThick,
+      thickness = hingeMountThick,
       offsetX = 21.5,
       offsetY = 7,
       clipRowsCols = [
@@ -129,7 +130,7 @@ module hingeMount(positionScrewsForOuter = false) {
       ]
     );
 
-    translate([ -hingeArmThick, 0,
+    translate([ -hingeMountThick, 0,
       positionScrewsForOuter
         ? hingeArmThick / 2
         : hingeArmThick / -2
