@@ -6,17 +6,16 @@ PLATE_DISTANCE = 120;
 
 magic = 0.1;
 hingeMainD = 45;
-hingeMainThick = 2.5;
-hingeMainH = 10;
-hingeToothR = 1;
-hingeToothH = 1.5;
-hingeCutout = 18;
-hingeToleranceR = .8; // .3 was a bit too little, 1 a bit too much
+hingeMainThick = 3;
+hingeMainH = 8;
+hingeToothR = 0;
+hingeToothH = 2;
+hingeCutout = 16;
+hingeToleranceR = .8;
 hingeToleranceZ = .8;
-hingeArmThick = 4;
+hingeArmThick = 3; // TODO: Prod value: hingeMainH
 hingeArmWidth = 25;
-// hingeArmLength = 60;
-hingeArmLength = 35;
+hingeArmLength = 35; // TODO: Prod value: 60
 hingeMountWidth = 44;
 hingeMountHeight = 35;
 
@@ -25,7 +24,7 @@ hingeMountHeight = 35;
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true, renderOuter = true);
+hinge(renderInner = true, renderOuter = false);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
@@ -60,7 +59,7 @@ module hingeInner() {
           translate([ 0, 0, hingeMainH + hingeToleranceZ ])
           cylinder(d = hingeMainD + hingeToothR * 2, h = hingeToothH);
           translate([ 0, 0, hingeMainH + hingeToleranceZ + hingeToothH ])
-          cylinder(d = hingeMainD, h = hingeToothH);
+          cylinder(d = hingeMainD - hingeMainThick * 2, h = hingeToothH);
         }
 
         // Bottom plate:
