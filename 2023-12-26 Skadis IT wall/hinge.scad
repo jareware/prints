@@ -14,9 +14,9 @@ hingeToothH2 = 1.2;
 hingeCutout = 16;
 hingeToleranceR = .8;
 hingeToleranceZ = .4;
-hingeArmThick = hingeMainH; // Prod value: hingeMainH
+hingeArmThick = 3; // Prod value: hingeMainH
 hingeArmWidth = 25;
-hingeArmLength = 35; // Prod value: 65
+hingeArmLength = 0; // Prod value: 65
 hingeMountWidth = 44;
 hingeMountHeight = 30;
 hingeMountThick = 3;
@@ -26,7 +26,7 @@ hingeMountThick = 3;
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true);
+hinge(renderOuter = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
