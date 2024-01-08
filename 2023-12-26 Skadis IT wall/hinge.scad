@@ -24,11 +24,18 @@ hingeMountThick = 3;
 // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
-// Uploaded as e.g. "Skadis IT wall - Hinge inner"
-
 // Sample:
-// rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true);
+rotate([ -90, 0, 0 ]) // for a more realistic render
+hinge(renderInner = true, renderOuter = true, renderInnerMount = true, renderOuterMount = true);
+
+// Printed as "Skadis IT wall - Hinge inner", Standard, 100% infill for 42-55:
+// hinge(renderInner = true);
+
+// Printed as "Skadis IT wall - Hinge outer", Standard:
+// hinge(renderOuter = true);
+
+// Printed as "Skadis IT wall - Hinge mount 1" and "2", Standard, 100% infill for 14-999:
+// hinge(renderInnerMount = true, renderOuterMount = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
