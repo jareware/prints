@@ -14,9 +14,9 @@ hingeToothH2 = 1.2;
 hingeCutout = 16;
 hingeToleranceR = .8;
 hingeToleranceZ = .4;
-hingeArmThick = 3; // Prod value: hingeMainH
+hingeArmThick = hingeMainH; // Prod value: hingeMainH
 hingeArmWidth = 25;
-hingeArmLength = 0; // Prod value: 65
+hingeArmLength = 65;
 hingeMountWidth = 44;
 hingeMountHeight = 30;
 hingeMountThick = 3;
@@ -24,9 +24,11 @@ hingeMountThick = 3;
 // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
+// Uploaded as e.g. "Skadis IT wall - Hinge inner"
+
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderOuter = true);
+hinge(renderInner = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
