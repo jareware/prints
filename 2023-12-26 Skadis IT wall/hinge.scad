@@ -5,31 +5,33 @@ use <mount.scad>
 PLATE_DISTANCE = 120;
 
 magic = 0.1;
-hingeMainD = 45;
-hingeMainThick = 3.5;
-hingeMainH = 8;
+hingeMainD = 40;
+hingeMainThick = 4.5;
+hingeMainH = 7;
 hingeToothR = .15;
 hingeToothH1 = .8;
 hingeToothH2 = 1.2;
-hingeCutout = 16;
+hingeCutout = 10;
 hingeToleranceR = .8;
 hingeToleranceZ = .4;
 hingeArmThick = hingeMainH; // Prod value: hingeMainH
-hingeArmWidth = 25;
+hingeArmWidth = 30;
 hingeArmLength = 65;
 hingeMountWidth = 44;
 hingeMountHeight = 30;
 hingeMountThick = 3;
+hingeBottomSlopeH = 2;
+hingeBottomSlopeD = 1;
 
 // Plate distance sanity check:
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
 // Sample:
-rotate([ -90, 0, 0 ]) // for a more realistic render
-hinge(renderInner = true, renderOuter = true, renderInnerMount = true, renderOuterMount = true);
+// rotate([ -90, 0, 0 ]) // for a more realistic render
+// hinge(renderInner = true, renderInnerMount = true);
 
-// Printed as "Skadis IT wall - Hinge inner", Standard, 100% infill for 42-55:
-// hinge(renderInner = true);
+// Printed as "Skadis IT wall - Hinge inner", Standard, 100% infill for 35-55:
+hinge(renderInner = true);
 
 // Printed as "Skadis IT wall - Hinge outer", Standard:
 // hinge(renderOuter = true);
@@ -119,6 +121,10 @@ module hingeOuter() {
       translate([ hingeArmLength, 0, hingeArmThick / 2 ])
       rotate([ 0, 180, 0 ])
       screwHoles();
+
+      // Bottom guide slope:
+      translate([ 0, 0, -magic ])
+      cylinder(d1 = hingeMainD + hingeBottomSlopeD, d2 = hingeMainD, h = hingeBottomSlopeH + magic * 2);
     }
   }
 }

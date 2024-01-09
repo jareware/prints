@@ -21,6 +21,8 @@ translate([ 15, 0, -clipH1 - clipTolerance - 3 ])
 rotate([ 0, 0, 90 ])
 clipPinnedPin();
 
+// Printed as "Skadis IT wall - Pins"
+
 module clipPinned() {
   difference() {
     roundedCube(clipX, clipY, clipH1 + clipH2, centerX = true, centerY = true, r = clipX / 2, flatBottom = true);
