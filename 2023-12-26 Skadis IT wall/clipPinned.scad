@@ -11,7 +11,9 @@ clipHoleD = clipY * .5;
 clipHoleRaise = 2;
 clipTolerance = .4;
 clipPinLength = 18;
-pinRightFinY = clipHoleD * .75;
+clipPinFinY = clipHoleD * .75;
+clipPinHeadEaseX = 3;
+clipPinHeadEaseDeg = 10;
 
 // Sample:
 translate([ 8 / -2, 18 / -2, -3 ])
@@ -22,6 +24,9 @@ rotate([ 0, 0, 90 ])
 clipPinnedPin();
 
 // Printed as "Skadis IT wall - Pins"
+
+// Also, printed this as a pin pushing tool:
+// cylinder(d1 = clipHoleD * 1.5, d2 = clipHoleD * .4, h = 70);
 
 module clipPinned() {
   difference() {
@@ -50,15 +55,19 @@ module clipPinnedPin() {
       translate([ clipX / 2  + clipTolerance, 0, clipH1 + clipTolerance ])
       roundedCube(
         (clipPinLength - clipX) / 2 - clipTolerance,
-        pinRightFinY,
+        clipPinFinY,
         clipH2 - clipTolerance,
         centerY = true,
-        r = pinRightFinY / 2,
+        r = clipPinFinY / 2,
         flatRight = true
       );
     }
 
     translate([ clipPinLength / -2, clipY / -2, 0 ])
+    cube([ clipPinLength, clipY, clipH1 + clipTolerance ]);
+
+    translate([ clipPinLength / -2 + clipPinHeadEaseX, clipY / -2, clipH1 + clipTolerance ])
+    rotate([ 0, 180 + clipPinHeadEaseDeg, 0 ])
     cube([ clipPinLength, clipY, clipH1 + clipTolerance ]);
   }
 
