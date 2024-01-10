@@ -28,16 +28,16 @@ hingeBottomSlopeD = 1;
 
 // Sample:
 // rotate([ -90, 0, 0 ]) // for a more realistic render
-// hinge(renderInner = true, renderInnerMount = true);
+// hinge(renderInner = true, renderOuter = true);
 
-// Printed as "Skadis IT wall - Hinge inner", Standard, 100% infill for 35-55:
-hinge(renderInner = true);
+// Printed as "Skadis IT wall - Hinge inner":
+// hinge(renderInner = true);
 
-// Printed as "Skadis IT wall - Hinge outer", Standard:
+// Printed as "Skadis IT wall - Hinge outer":
 // hinge(renderOuter = true);
 
-// Printed as "Skadis IT wall - Hinge mount 1" and "2", Standard, 100% infill for 14-999:
-// hinge(renderInnerMount = true, renderOuterMount = true);
+// Printed as "Skadis IT wall - Hinge mount 1" and "2":
+hinge(renderInnerMount = true, renderOuterMount = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {

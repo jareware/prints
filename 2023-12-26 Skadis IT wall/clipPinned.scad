@@ -3,8 +3,8 @@ $fn = $preview ? 15 : 50;
 use <../lib/roundedCube.scad>
 
 magic = 0.01;
-clipX = 5 - .2;
-clipY = 15 - .2;
+clipX = 5 - .3;
+clipY = 15 - .3;
 clipH1 = 5.3; // i.e. IKEA Skådis plate thickness
 clipH2 = 9; // i.e. height above plate
 clipHoleD = clipY * .5;
