@@ -27,8 +27,8 @@ hingeBottomSlopeD = 1;
 // translate([ PLATE_DISTANCE / -2 , 0, 0]) #cube([ PLATE_DISTANCE, 10, 100 ]);
 
 // Sample:
-// rotate([ -90, 0, 0 ]) // for a more realistic render
-// hinge(renderInner = true, renderOuter = true);
+rotate([ -90, 0, 0 ]) // for a more realistic render
+hinge(renderInner = true, renderOuter = true, renderOuterMount = true, renderInnerMount = true);
 
 // Printed as "Skadis IT wall - Hinge inner":
 // hinge(renderInner = true);
@@ -37,7 +37,10 @@ hingeBottomSlopeD = 1;
 // hinge(renderOuter = true);
 
 // Printed as "Skadis IT wall - Hinge mount 1" and "2":
-hinge(renderInnerMount = true, renderOuterMount = true);
+// hinge(renderInnerMount = true, renderOuterMount = true);
+
+// Printed as "Skadis IT wall - Hinge mount R 1" and "2":
+// hinge(leftHandSide = false, renderInnerMount = true, renderOuterMount = true);
 
 module hinge(leftHandSide = true, renderInner = false, renderOuter = false, renderInnerMount = false, renderOuterMount = false) {
   mirror([ 0, leftHandSide ? 0 : 1, 0 ]) {
