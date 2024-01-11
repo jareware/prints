@@ -5,10 +5,10 @@ clipX = 5;
 clipY = 15;
 clipH = 5.3; // i.e. IKEA Skådis plate thickness
 clipTolerance = .3;
-clipCoreD1 = 3;
-clipCoreD2 = 3.5;
-clipCoreD3 = 6.7; // screw head max D
-clipCoreH3 = 3.7; // screw head H
+clipCoreD1 = 1.9; // attaching section
+clipCoreD2 = 2.5; // free rotating section
+clipCoreD3 = 4.9; // screw head max D
+clipCoreH3 = 2.5; // screw head H
 clipTopH = 7;
 
 // Sample:
