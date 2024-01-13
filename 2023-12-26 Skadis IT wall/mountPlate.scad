@@ -1,6 +1,8 @@
 $fn = $preview ? 25 : 75;
 
 use <clipPinned.scad>
+use <clipTwisted.scad>
+use <clipPushed.scad>
 use <../lib/roundedCube.scad>
 
 magic = 0.01;
@@ -11,7 +13,7 @@ clipDistanceY = 20;
 mountRounding = 4;
 
 // Sample:
-mount(
+mountPlate(
   width = 50,
   height = 38,
   offsetX = 1.5,
@@ -22,14 +24,10 @@ mount(
   ]
 );
 
-module mount(width = 40, height = 20, thickness = 2, offsetX = 0, offsetY = 0, clipRowsCols = [[true]]) {
-  mountPlate(width, height, thickness);
+module mountPlate(width = 40, height = 20, thickness = 2, offsetX = 0, offsetY = 0, clipRowsCols = [[true]]) {
+  roundedCube(width, height, thickness, r = mountRounding, flatTop = true, flatBottom = true, centerX = true, centerY = true);
   translate([ width / -2 + offsetX + clipX, height / 2 - offsetY + clipY, thickness ])
   mountClips(clipRowsCols);
-}
-
-module mountPlate(width, height, thickness) {
-  roundedCube(width, height, thickness, r = mountRounding, flatTop = true, flatBottom = true, centerX = true, centerY = true);
 }
 
 module mountClips(clipRowsCols) {
@@ -39,7 +37,9 @@ module mountClips(clipRowsCols) {
       for (x = [0 : len(clipRowsCols[y]) - 1]) {
         if (clipRowsCols[y][x]) {
           translate([ x * clipDistanceX + (y % 2 == 1 ? clipDistanceX / -2 : 0), y * clipDistanceY, 0 ])
+          // clipPushed();
           clipPinned();
+          // clipTwisted();
         }
       }
     }

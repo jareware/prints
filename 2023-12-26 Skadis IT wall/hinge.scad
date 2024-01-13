@@ -1,6 +1,6 @@
 $fn = $preview ? 50 : 100;
 
-use <mount.scad>
+use <mountPlate.scad>
 
 PLATE_DISTANCE = 120;
 
@@ -137,7 +137,7 @@ module hingeMount(positionScrewsForOuter = false) {
   difference() {
     rotate([ 0, -90, 0 ])
     translate([ raise, 0, 0 ])
-    mount(
+    mountPlate(
       width = hingeMountHeight, // yes, swapped intentionally
       height = hingeMountWidth,
       thickness = hingeMountThick,
