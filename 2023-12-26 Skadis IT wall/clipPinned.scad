@@ -24,6 +24,7 @@ rotate([ 0, 0, 90 ])
 clipPinnedPin();
 
 // Printed as "Skadis IT wall - Pins"
+// clipPinnedPin();
 
 // Also, printed this as a pin pushing tool:
 // cylinder(d1 = clipHoleD * 1.5, d2 = clipHoleD * .4, h = 70);
