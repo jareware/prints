@@ -8,9 +8,11 @@ mainZ = 15;
 mainWidth = 20;
 mainHeight = 70;
 mountRounding = 4;
-screwD = 4; // screw diameter
-screwH = 8; // thickness between wall & screw
-screwAccessD = 10; // large enough for screwdriver head
+screwD = 10; // screw chute diameter
+anchorHeadD = 22;
+anchorHeadH = 2;
+topWasherD = 22;
+topWasherH = 5;
 
 // Sample:
 mountWall();
@@ -36,8 +38,14 @@ module mountWall() {
     translate([ 0, 0, -magic ])
     cylinder(d = screwD, h = mainZ + magic * 2);
 
-    // Access hole:
-    translate([ 0, 0, screwH ])
-    cylinder(d = screwAccessD, h = mainZ);
+    // Top washer movement space:
+    translate([ 0, 0, mainZ - topWasherH + magic ])
+    scale([ 2, 1, 1 ])
+    cylinder(d = topWasherD, h = topWasherH);
+
+    // Bottom anchor head space:
+    translate([ 0, 0, -magic ])
+    scale([ 2, 1, 1 ])
+    cylinder(d = anchorHeadD, h = anchorHeadH);
   }
 }
