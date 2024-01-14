@@ -18,9 +18,9 @@ mountPlateTopHeight = 30;
 mountPlateThickness = 3;
 
 // Plate distance sanity check:
-// if ($preview) #cube([ 50, 10, PLATE_DISTANCE ]);
+if ($preview) #cube([ 50, 10, PLATE_DISTANCE ]);
 
-// Printed as "Skadis IT wall - Door fastener"
+// Printed as "Skadis IT wall - Door fastener T"
 doorFastener(bottom = false);
 
 module doorFastener(top = true, bottom = true) {
@@ -39,14 +39,15 @@ module doorFastener(top = true, bottom = true) {
         clipRowsCols = [[true]]
       );
 
+      translate([ 0, 0, mountPlateThickness ])
       if (top) {
         // Top:
-        translate([ 0, 0, PLATE_DISTANCE ])
+        translate([ 0, 0, (PLATE_DISTANCE - mountPlateThickness) ])
         clipPinned();
 
         // Tapered part:
-        translate([ 0, 0, PLATE_DISTANCE / 2 ])
-        cube([ mainWidth, mainHeightTaper, PLATE_DISTANCE ], center = true);
+        translate([ 0, 0, (PLATE_DISTANCE - mountPlateThickness) / 2 ])
+        cube([ mainWidth, mainHeightTaper, (PLATE_DISTANCE - mountPlateThickness) ], center = true);
 
         // Full width part:
         hull() {
@@ -61,6 +62,6 @@ module doorFastener(top = true, bottom = true) {
 
     // Screw holes:
     rotate([ 0, -90, 0 ])
-    screwHoles();
+    #screwHoles();
   }
 }
