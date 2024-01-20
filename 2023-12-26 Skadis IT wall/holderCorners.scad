@@ -24,33 +24,26 @@ module holderCorners(
   clipHideX = 25,
   clipHideY = 25,
 ) {
-  // TODO: DEDUPE
-  clipDistX = round((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
-  clipDistY = round((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
-  clipOffsetX = (contentX - clipDistX) / 2;
-  clipOffsetY = (contentY - clipDistY) / 2;
-
   // Sanity check content:
   %cube([ contentX, contentY, contentZ ]);
 
-  // Sanity check clip distance:
-  if ($preview) {
-    translate([ clipOffsetX, clipOffsetY, -10 ])
-    #cube([ clipDistanceX * 4, 1, 10 ]);
-    translate([ clipOffsetX, clipOffsetY, -10 ])
-    #cube([ 1, clipDistanceY * 2, 10 ]);
-  }
+  // // Sanity check clip distance:
+  // if ($preview) {
+  //   translate([ clipOffsetX, clipOffsetY, -10 ])
+  //   #cube([ clipDistanceX * 4, 1, 10 ]);
+  //   translate([ clipOffsetX, clipOffsetY, -10 ])
+  //   #cube([ 1, clipDistanceY * 2, 10 ]);
+  // }
 
   // Bottom left:
 
-  !holderCornerAssembly(
-    contentX,
-    contentY,
+  holderCornerAssembly(
     contentZ,
     cornerCoverage,
     bandWidth,
     clipHideX,
-    clipHideY
+    clipHideY,
+    "BL"
   );
 
   // Bottom right:
@@ -58,13 +51,12 @@ module holderCorners(
   translate([ contentX, 0, 0 ])
   mirror([ 1, 0, 0 ])
   holderCornerAssembly(
-    contentX,
-    contentY,
     contentZ,
     cornerCoverage,
     bandWidth,
     clipHideX,
-    clipHideY
+    clipHideY,
+    "BR"
   );
 
   // Top left:
@@ -72,13 +64,12 @@ module holderCorners(
   translate([ 0, contentY, 0 ])
   mirror([ 0, 1, 0 ])
   holderCornerAssembly(
-    contentX,
-    contentY,
     contentZ,
     cornerCoverage,
     bandWidth,
     clipHideX,
-    clipHideY
+    clipHideY,
+    "TL"
   );
 
   // Top right:
@@ -87,26 +78,25 @@ module holderCorners(
   mirror([ 1, 0, 0 ])
   mirror([ 0, 1, 0 ])
   holderCornerAssembly(
-    contentX,
-    contentY,
     contentZ,
     cornerCoverage,
     bandWidth,
     clipHideX,
-    clipHideY
+    clipHideY,
+    "TR"
   );
 }
 
 module holderCornerAssembly(
-  contentX,
-  contentY,
   contentZ,
   cornerCoverage,
   bandWidth,
   clipHideX,
   clipHideY,
+  label = ""
 ) {
-  // TODO: DEDUPE
+  contentX = cornerCoverage;
+  contentY = cornerCoverage;
   clipDistX = round((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
   clipDistY = round((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
   clipOffsetX = (contentX - clipDistX) / 2;
@@ -129,6 +119,10 @@ module holderCornerAssembly(
     translate([ clipOffsetX, clipOffsetY, -thickness ])
     cylinder(d = clipY + clipPlateExtra * 2, h = thickness);
   }
+
+  // translate([ 0, 0, 0 ])
+  // #linear_extrude(1)
+  // text(label);
 }
 
 module holderCorner(
