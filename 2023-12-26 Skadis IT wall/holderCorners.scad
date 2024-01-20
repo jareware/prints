@@ -8,7 +8,7 @@ clipX = 5;
 clipY = 15;
 clipDistanceX = 40;
 clipDistanceY = 20 * 2; // because only every other row works for us here
-clipCenterBy = 10;
+clipPlateExtra = 5;
 thickness = 3;
 rounding = 3;
 
@@ -21,8 +21,8 @@ module holderCorners(
   contentZ,
   cornerCoverage = 20,
   bandWidth = 5,
-  clipHideX = 10,
-  clipHideY = 10,
+  clipHideX = 25,
+  clipHideY = 25,
 ) {
   // TODO: DEDUPE
   clipDistX = round((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
@@ -34,14 +34,16 @@ module holderCorners(
   %cube([ contentX, contentY, contentZ ]);
 
   // Sanity check clip distance:
-  translate([ clipOffsetX, clipOffsetY, -10 ])
-  #cube([ clipDistanceX * 4, 1, 10 ]);
-  translate([ clipOffsetX, clipOffsetY, -10 ])
-  #cube([ 1, clipDistanceY * 2, 10 ]);
+  if ($preview) {
+    translate([ clipOffsetX, clipOffsetY, -10 ])
+    #cube([ clipDistanceX * 4, 1, 10 ]);
+    translate([ clipOffsetX, clipOffsetY, -10 ])
+    #cube([ 1, clipDistanceY * 2, 10 ]);
+  }
 
   // Bottom left:
 
-  holderCornerAssembly(
+  !holderCornerAssembly(
     contentX,
     contentY,
     contentZ,
@@ -115,6 +117,18 @@ module holderCornerAssembly(
   translate([ clipOffsetX, clipOffsetY, -thickness ])
   rotate([ 0, 180, 0 ])
   clipPinned();
+
+  hull() {
+    intersection() {
+      translate([ -thickness, -thickness, -thickness ])
+      cube([ cornerCoverage, cornerCoverage, thickness ]);
+
+      holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
+    }
+
+    translate([ clipOffsetX, clipOffsetY, -thickness ])
+    roundedCube(clipX + clipPlateExtra, clipY + clipPlateExtra, thickness, r = rounding, flatTop = true, flatBottom = true, centerX = true, centerY = true);
+  }
 }
 
 module holderCorner(
@@ -127,7 +141,7 @@ module holderCorner(
   difference() {
     intersection() {
       translate([ -thickness, -thickness, -thickness ])
-      roundedCube(cornerCoverage, cornerCoverage, contentZ + thickness * 2, r = rounding, flatRight = true, flatBack = true);
+      roundedCube(cornerCoverage, cornerCoverage, contentZ + thickness * 2, r = rounding, flatRight = true, flatBack = true, flatBottom = true);
 
       translate([ -thickness, -thickness, -thickness ])
       cylinder(r = cornerCoverage, h = contentZ + thickness * 2);
