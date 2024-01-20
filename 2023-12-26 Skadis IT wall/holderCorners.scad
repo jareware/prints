@@ -24,6 +24,7 @@ module holderCorners(
   clipHideX = 10,
   clipHideY = 10,
 ) {
+  // TODO: DEDUPE
   clipDistX = round((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
   clipDistY = round((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
   clipOffsetX = (contentX - clipDistX) / 2;
@@ -33,46 +34,85 @@ module holderCorners(
   %cube([ contentX, contentY, contentZ ]);
 
   // Sanity check clip distance:
-  translate([ clipOffsetX, clipOffsetY, -thickness ])
-  #cube([ clipDistanceX * 3, 1, 10 ]);
-  translate([ clipOffsetX, clipOffsetY, -thickness ])
+  translate([ clipOffsetX, clipOffsetY, -10 ])
+  #cube([ clipDistanceX * 4, 1, 10 ]);
+  translate([ clipOffsetX, clipOffsetY, -10 ])
   #cube([ 1, clipDistanceY * 2, 10 ]);
 
   // Bottom left:
 
-  holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
-
-  translate([ clipOffsetX, clipOffsetY, -thickness ])
-  rotate([ 0, 180, 0 ])
-  clipPinned();
+  holderCornerAssembly(
+    contentX,
+    contentY,
+    contentZ,
+    cornerCoverage,
+    bandWidth,
+    clipHideX,
+    clipHideY
+  );
 
   // Bottom right:
 
   translate([ contentX, 0, 0 ])
-  rotate([ 0, 0, 90 ])
-  holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
-
-  translate([ clipOffsetX + clipDistX, clipOffsetY, -thickness ])
-  rotate([ 0, 180, 0 ])
-  clipPinned();
+  mirror([ 1, 0, 0 ])
+  holderCornerAssembly(
+    contentX,
+    contentY,
+    contentZ,
+    cornerCoverage,
+    bandWidth,
+    clipHideX,
+    clipHideY
+  );
 
   // Top left:
 
   translate([ 0, contentY, 0 ])
-  rotate([ 0, 0, -90 ])
-  holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
-
-  translate([ clipOffsetX, clipOffsetY + clipDistY, -thickness ])
-  rotate([ 0, 180, 0 ])
-  clipPinned();
+  mirror([ 0, 1, 0 ])
+  holderCornerAssembly(
+    contentX,
+    contentY,
+    contentZ,
+    cornerCoverage,
+    bandWidth,
+    clipHideX,
+    clipHideY
+  );
 
   // Top right:
 
   translate([ contentX, contentY, 0 ])
-  rotate([ 0, 0, 180 ])
+  mirror([ 1, 0, 0 ])
+  mirror([ 0, 1, 0 ])
+  holderCornerAssembly(
+    contentX,
+    contentY,
+    contentZ,
+    cornerCoverage,
+    bandWidth,
+    clipHideX,
+    clipHideY
+  );
+}
+
+module holderCornerAssembly(
+  contentX,
+  contentY,
+  contentZ,
+  cornerCoverage,
+  bandWidth,
+  clipHideX,
+  clipHideY,
+) {
+  // TODO: DEDUPE
+  clipDistX = round((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
+  clipDistY = round((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
+  clipOffsetX = (contentX - clipDistX) / 2;
+  clipOffsetY = (contentY - clipDistY) / 2;
+
   holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
 
-  translate([ clipOffsetX + clipDistX, clipOffsetY + clipDistY, -thickness ])
+  translate([ clipOffsetX, clipOffsetY, -thickness ])
   rotate([ 0, 180, 0 ])
   clipPinned();
 }
