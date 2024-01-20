@@ -8,12 +8,12 @@ clipX = 5;
 clipY = 15;
 clipDistanceX = 40;
 clipDistanceY = 20 * 2; // because only every other row works for us here
-clipPlateExtra = 1;
 thickness = 3;
 rounding = 3;
 
 // Printed as "..."
-holderCorners(158 + 0, 100 + 0, 29);
+// holderCorners(158 + 0, 100 + 0, 29);
+holderCorners(205, 50, 23 - 7.5 + thickness, cornerCoverage = 18, clipPlate = 0);
 
 module holderCorners(
   contentX,
@@ -21,70 +21,55 @@ module holderCorners(
   contentZ,
   cornerCoverage = 20,
   bandWidth = 5,
-  clipHideX = 0,
+  clipHideX = 5,
   clipHideY = 0,
+  clipPlate = clipY,
 ) {
   // Sanity check content:
-  %cube([ contentX, contentY, contentZ ]);
+  // if ($preview) %cube([ contentX, contentY, contentZ ]);
 
-  // // Sanity check clip distance:
+  // Sanity check clip distance:
   // if ($preview) {
+  //   clipDistX = floor((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
+  //   clipDistY = floor((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
+  //   clipOffsetX = (contentX - clipDistX) / 2;
+  //   clipOffsetY = (contentY - clipDistY) / 2;
+
   //   translate([ clipOffsetX, clipOffsetY, -10 ])
-  //   #cube([ clipDistanceX * 4, 1, 10 ]);
+  //   #cube([ clipDistanceX * 5, 1, 10 ]);
   //   translate([ clipOffsetX, clipOffsetY, -10 ])
   //   #cube([ 1, clipDistanceY * 2, 10 ]);
   // }
+  // if ($preview) {
+  //   for (x = [0:10])
+  //   for (y = [0:10])
+  //   translate([ 5 + clipX / -2 + clipDistanceX * x, clipY / -2, -10 ])
+  //   #cube([ clipX, clipY, MAGIC ]);
+  // }
 
-  holderCornerAssembly(
-    "BL",
-    contentZ,
-    cornerCoverage,
-    bandWidth,
-    clipHideX,
-    clipHideY
-  );
+  holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, bandWidth, clipHideX, clipHideY, clipPlate);
 
   translate([ contentX, 0, 0 ])
-  holderCornerAssembly(
-    "BR",
-    contentZ,
-    cornerCoverage,
-    bandWidth,
-    clipHideX,
-    clipHideY
-  );
+  holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, bandWidth, clipHideX, clipHideY, clipPlate);
 
-  translate([ 0, contentY, 0 ])
-  holderCornerAssembly(
-    "TL",
-    contentZ,
-    cornerCoverage,
-    bandWidth,
-    clipHideX,
-    clipHideY
-  );
+  // translate([ 0, contentY, 0 ])
+  // holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, bandWidth, clipHideX, clipHideY, clipPlate);
 
-  translate([ contentX, contentY, 0 ])
-  holderCornerAssembly(
-    "TR",
-    contentZ,
-    cornerCoverage,
-    bandWidth,
-    clipHideX,
-    clipHideY
-  );
+  // translate([ contentX, contentY, 0 ])
+  // holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, bandWidth, clipHideX, clipHideY, clipPlate);
 }
 
 module holderCornerAssembly(
   which = "",
+  contentX,
+  contentY,
   contentZ,
   cornerCoverage,
   bandWidth,
   clipHideX,
   clipHideY,
+  clipPlate,
 ) {
-  contentX = cornerCoverage;
-  contentY = cornerCoverage;
   clipDistX = floor((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
   clipDistY = floor((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
   clipOffsetX = (contentX - clipDistX) / 2;
@@ -94,7 +79,7 @@ module holderCornerAssembly(
     mirror(which == "TR" ? [ 1, 0, 0 ] : [ 0, 0, 0 ])
     mirror(which == "BL" ? [ 0, 0, 0 ] : which == "BR" ? [ 1, 0, 0 ] : [ 0, 1, 0 ])
     union() {
-      holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
+      holderCornerAngled(contentX, contentY, contentZ, cornerCoverage, bandWidth);
 
       translate([ clipOffsetX, clipOffsetY, -thickness ])
       rotate([ 0, 180, 0 ])
@@ -102,28 +87,29 @@ module holderCornerAssembly(
 
       hull() {
         intersection() {
-          translate([ -thickness, -thickness, -thickness ])
-          cube([ cornerCoverage, cornerCoverage, thickness ]);
+          translate([ 0, 0, -thickness ])
+          cube([ cornerCoverage - thickness, cornerCoverage - thickness, thickness ]);
 
-          holderCorner(contentX, contentY, contentZ, cornerCoverage, bandWidth);
+          holderCornerAngled(contentX, contentY, contentZ, cornerCoverage, bandWidth);
         }
 
         translate([ clipOffsetX, clipOffsetY, -thickness ])
-        cylinder(d = clipY + clipPlateExtra * 2, h = thickness);
+        #cylinder(d = clipPlate, h = thickness);
       }
     }
 
     translate([
-      cornerCoverage / (which == "TL" || which == "BL" ? 3 : -3),
-      cornerCoverage / (which == "TL" || which == "TR" ? -3 : 3),
-      -1
+      cornerCoverage * (which == "TL" || which == "BL" ? 1 : -1) * .3,
+      cornerCoverage * (which == "TL" || which == "TR" ? -1 : 1) * .2,
+      -.35
     ])
+    scale([ .5, .5, 1 ])
     linear_extrude(1)
     text(which, halign="center", valign="center");
   }
 }
 
-module holderCorner(
+module holderCornerCurved(
   contentX,
   contentY,
   contentZ,
@@ -139,9 +125,32 @@ module holderCorner(
       cylinder(r = cornerCoverage, h = contentZ + thickness * 2);
     }
 
+    // Remove space for content:
     cube([ contentX, contentY, contentZ ]);
 
     translate([ -thickness, -thickness, 0 ])
     cylinder(r = cornerCoverage - bandWidth, h = contentZ + thickness * 2);
+  }
+}
+
+module holderCornerAngled(
+  contentX,
+  contentY,
+  contentZ,
+  cornerCoverage,
+  bandWidth,
+) {
+  difference() {
+    translate([ -thickness, -thickness, -thickness ])
+    roundedCube(cornerCoverage, cornerCoverage, contentZ + thickness * 2, r = rounding, flatRight = true, flatBack = true, flatBottom = true);
+
+    // Remove space for content:
+    cube([ cornerCoverage, cornerCoverage, contentZ ]);
+
+    // Remove angled bit:
+    translate([ sin(45) * thickness / 2, sin(45) * thickness / 2, -thickness - MAGIC ])
+    translate([ sin(45) * cornerCoverage + cornerCoverage / 2, -cornerCoverage / 2, 0 ])
+    rotate([ 0, 0, 45 ])
+    cube([ cornerCoverage * 2, cornerCoverage * 2, contentZ * 2 ]);
   }
 }
