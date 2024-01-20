@@ -24,10 +24,10 @@ module holderCorners(
   clipHideY = 0,
   clipPlateX = clipX + 5,
   clipPlateY = clipY + 5,
+  printLayout = true,
+  printPackX = 8,
+  printPackY = 36,
 ) {
-  // Sanity check content:
-  // if ($preview) %cube([ contentX, contentY, contentZ ]);
-
   // Sanity check clip distance:
   // if ($preview) {
   //   clipDistX = floor((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
@@ -47,16 +47,36 @@ module holderCorners(
   //   #cube([ clipX, clipY, MAGIC ]);
   // }
 
-  holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+  if (printLayout) {
+    rotate([ 90, 0, 0 ])
+    holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-  translate([ contentX, 0, 0 ])
-  holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+    rotate([ 90, 0, 0 ])
+    translate([ -printPackX, 0, 0 ])
+    holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-  translate([ 0, contentY, 0 ])
-  holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+    translate([ 0, printPackY, 0 ])
+    rotate([ -90, 0, 0 ])
+    holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-  translate([ contentX, contentY, 0 ])
-  holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+    translate([ -printPackX, printPackY, 0 ])
+    rotate([ -90, 0, 0 ])
+    holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+  } else {
+    // Sanity check content:
+    if ($preview) %cube([ contentX, contentY, contentZ ]);
+
+    holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+
+    translate([ contentX, 0, 0 ])
+    holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+
+    translate([ 0, contentY, 0 ])
+    holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+
+    translate([ contentX, contentY, 0 ])
+    holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
+  }
 }
 
 module holderCornerAssembly(
