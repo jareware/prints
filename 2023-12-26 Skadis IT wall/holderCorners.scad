@@ -13,7 +13,7 @@ rounding = 3;
 
 // Printed as "..."
 // holderCorners(158 + 0, 100 + 0, 29);
-holderCorners(204, 158, 18.5, cornerCoverage = 18);
+holderCorners(204, 158, 18.5, cornerCoverage = 18); // TP-Link WiFi AP
 
 module holderCorners(
   contentX,
@@ -26,9 +26,9 @@ module holderCorners(
   clipPlateY = clipY + 5,
   printLayout = true,
   printPackX = 8,
-  printPackY = 36,
+  printPackY = 1,
+  printInterleave = true,
 ) {
-  // Sanity check clip distance:
   // if ($preview) {
   //   clipDistX = floor((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
   //   clipDistY = floor((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
@@ -40,12 +40,6 @@ module holderCorners(
   //   translate([ clipOffsetX, clipOffsetY, -10 ])
   //   #cube([ 1, clipDistanceY * 2, 10 ]);
   // }
-  // if ($preview) {
-  //   for (x = [0:10])
-  //   for (y = [0:10])
-  //   translate([ 5 + clipX / -2 + clipDistanceX * x, clipY / -2, -10 ])
-  //   #cube([ clipX, clipY, MAGIC ]);
-  // }
 
   if (printLayout) {
     rotate([ 90, 0, 0 ])
@@ -55,16 +49,30 @@ module holderCorners(
     translate([ -printPackX, 0, 0 ])
     holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-    translate([ 0, printPackY, 0 ])
+    translate(printInterleave ? [ clipX + 1, -15, 0 ] : [ 0, 0, 0 ])
+    translate([ 0, 35 + printPackY, 0 ])
     rotate([ -90, 0, 0 ])
     holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-    translate([ -printPackX, printPackY, 0 ])
+    translate(printInterleave ? [ clipX + 1, -15, 0 ] : [ 0, 0, 0 ])
+    translate([ -printPackX, 35 + printPackY, 0 ])
     rotate([ -90, 0, 0 ])
     holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
   } else {
     // Sanity check content:
     if ($preview) %cube([ contentX, contentY, contentZ ]);
+
+    // Sanity check against grid:
+    if ($preview) {
+      for (x = [0:10])
+      for (y = [0:10])
+      translate([
+        clipX / -2 + clipDistanceX * x + 2,
+        clipY / -2 + clipDistanceY * y - 21,
+        -20
+      ])
+      #cube([ clipX, clipY, MAGIC ]);
+    }
 
     holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
