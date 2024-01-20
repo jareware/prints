@@ -8,7 +8,7 @@ clipX = 5;
 clipY = 15;
 clipDistanceX = 40;
 clipDistanceY = 20 * 2; // because only every other row works for us here
-clipPlateExtra = 5;
+clipPlateExtra = 1;
 thickness = 3;
 rounding = 3;
 
@@ -127,7 +127,7 @@ module holderCornerAssembly(
     }
 
     translate([ clipOffsetX, clipOffsetY, -thickness ])
-    roundedCube(clipX + clipPlateExtra, clipY + clipPlateExtra, thickness, r = rounding, flatTop = true, flatBottom = true, centerX = true, centerY = true);
+    cylinder(d = clipY + clipPlateExtra * 2, h = thickness);
   }
 }
 
@@ -149,7 +149,7 @@ module holderCorner(
 
     cube([ contentX, contentY, contentZ ]);
 
-    translate([ -thickness, -thickness, -thickness ])
+    translate([ -thickness, -thickness, 0 ])
     cylinder(r = cornerCoverage - bandWidth, h = contentZ + thickness * 2);
   }
 }
