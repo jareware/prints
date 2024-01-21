@@ -11,15 +11,14 @@ clipDistanceY = 20 * 2; // because only every other row works for us here
 thickness = 3;
 rounding = 3;
 
-// Printed as "..."
-// holderCorners(158 + 0, 100 + 0, 29);
-holderCorners(204, 158, 18.5, cornerCoverage = 18); // TP-Link WiFi AP
+// holderCorners(204, 158, 18.5); // TP-Link WiFi AP
+holderCorners(158, 102, 29.5 /* with pads */, clipPlateX = 14, clipPlateY = 28, printLayout = true); // NetGear switch
 
 module holderCorners(
   contentX,
   contentY,
   contentZ,
-  cornerCoverage = 20,
+  cornerCoverage = 18,
   clipHideX = 0,
   clipHideY = 0,
   clipPlateX = clipX + 5,
