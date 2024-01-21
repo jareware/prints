@@ -12,7 +12,8 @@ thickness = 3;
 rounding = 3;
 
 // holderCorners(204, 158, 18.5); // TP-Link WiFi AP
-holderCorners(158, 102, 29.5 /* with pads */, clipPlateX = 14, clipPlateY = 28, printLayout = true); // NetGear switch
+// holderCorners(158, 102, 29.5 /* with pads */, clipPlateX = 14, clipPlateY = 28); // NetGear switch
+holderCorners(110, 57.5, 39, cornerCoverage = 10, clipPlateY = 23.5); // TP-Link WiFi AP power
 
 module holderCorners(
   contentX,
@@ -66,8 +67,8 @@ module holderCorners(
       for (x = [0:10])
       for (y = [0:10])
       translate([
-        clipX / -2 + clipDistanceX * x + 2,
-        clipY / -2 + clipDistanceY * y - 21,
+        clipX / -2 + clipDistanceX * (x - 3) + 2,
+        clipY / -2 + clipDistanceY * (y - 3) - 21,
         -20
       ])
       #cube([ clipX, clipY, MAGIC ]);
@@ -133,6 +134,12 @@ module holderCornerAssembly(
     scale([ .5, .5, 1 ])
     linear_extrude(1)
     text(which, halign="center", valign="center");
+
+    // TEMP: Only for TP-Link WiFi AP power
+    if (which == "BR")
+    rotate([ 0, 90, 0 ])
+    translate([ -23.7, 20, -30 ])
+    cylinder(h = 50, d = 40);
   }
 }
 
