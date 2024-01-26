@@ -29,18 +29,6 @@ module holderCorners(
   printPackY = 1,
   printInterleave = true,
 ) {
-  // if ($preview) {
-  //   clipDistX = floor((contentX - clipHideX) / clipDistanceX) * clipDistanceX;
-  //   clipDistY = floor((contentY - clipHideY) / clipDistanceY) * clipDistanceY;
-  //   clipOffsetX = (contentX - clipDistX) / 2;
-  //   clipOffsetY = (contentY - clipDistY) / 2;
-
-  //   translate([ clipOffsetX, clipOffsetY, -10 ])
-  //   #cube([ clipDistanceX * 5, 1, 10 ]);
-  //   translate([ clipOffsetX, clipOffsetY, -10 ])
-  //   #cube([ 1, clipDistanceY * 2, 10 ]);
-  // }
-
   if (printLayout) {
     rotate([ 90, 0, 0 ])
     holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
