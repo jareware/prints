@@ -122,12 +122,6 @@ module holderCornerAssembly(
     scale([ .4, .4, 1 ])
     linear_extrude(1)
     text(which, halign="center", valign="center");
-
-    // TEMP: Only for TP-Link WiFi AP power
-    if (which == "BR")
-    rotate([ 0, 90, 0 ])
-    translate([ -23.7, 20, -30 ])
-    cylinder(h = 50, d = 40);
   }
 }
 
