@@ -115,11 +115,11 @@ module holderCornerAssembly(
     }
 
     translate([
-      cornerCoverage * (which == "TL" || which == "BL" ? 1 : -1) * .3,
-      cornerCoverage * (which == "TL" || which == "TR" ? -1 : 1) * .2,
+      clipOffsetX * (which == "TL" || which == "BL" ? 1 : -1) * .75,
+      clipOffsetY * (which == "TL" || which == "TR" ? -1 : 1) * .5,
       -.35
     ])
-    scale([ .5, .5, 1 ])
+    scale([ .4, .4, 1 ])
     linear_extrude(1)
     text(which, halign="center", valign="center");
 
