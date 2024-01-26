@@ -181,8 +181,7 @@ module holderCornerAngled(
     cube([ cornerCoverage, cornerCoverage, contentZ ]);
 
     // Remove angled bit:
-    translate([ sin(45) * thickness / 2, sin(45) * thickness / 2, -thickness - MAGIC ])
-    translate([ sin(45) * cornerCoverage + cornerCoverage / 2, -cornerCoverage / 2, 0 ])
+    translate([ cornerCoverage - thickness, 0, 0 ])
     rotate([ 0, 0, 45 ])
     cube([ cornerCoverage * 2, cornerCoverage * 2, contentZ * 2 ]);
   }
