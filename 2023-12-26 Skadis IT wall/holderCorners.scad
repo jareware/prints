@@ -106,7 +106,7 @@ module holderCornerAssembly(
       hull() {
         intersection() {
           translate([ 0, 0, -thickness ])
-          cube([ cornerCoverage - thickness, cornerCoverage - thickness, thickness ]);
+          cube([ cornerCoverage, cornerCoverage, thickness ]);
 
           holderCornerAngled(contentX, contentY, contentZ, cornerCoverage, extraTopCoverage);
         }
@@ -160,7 +160,7 @@ module holderCornerAngled(
 ) {
   difference() {
     translate([ -thickness, -thickness, -thickness ])
-    roundedCube(cornerCoverage, cornerCoverage, contentZ + thickness * 2, r = rounding, flatRight = true, flatBack = true, flatBottom = true);
+    roundedCube(cornerCoverage + thickness, cornerCoverage + thickness, contentZ + thickness * 2, r = rounding, flatRight = true, flatBack = true, flatBottom = true);
 
     // Remove space for content:
     cube([ cornerCoverage, cornerCoverage, contentZ ]);
