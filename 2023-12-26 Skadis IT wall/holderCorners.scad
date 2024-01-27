@@ -15,7 +15,8 @@ rounding = 3;
 // holderCorners(158, 102, 29.5 /* with pads */, clipPlateX = 14, clipPlateY = 28); // NetGear switch
 // holderCorners(110, 57.5, 39, cornerCoverage = 10, clipPlateY = 23.5); // TP-Link WiFi AP power
 // holderCorners(60, 97, 16, cornerCoverage = 5.5, extraTopCoverage = 3.5); // TI LAUNCHXL-CC26X2R1 Zigbee controller
-holderCorners(57, 85.5, 4, cornerCoverage = 2.5, extraTopCoverage = 5, clipHideY = 10, clipPlateY = 17, clipPlateX = 7); // Raspberry Pi 4
+// holderCorners(57, 85.5, 4, cornerCoverage = 2.5, extraTopCoverage = 5, clipHideY = 10, clipPlateY = 17, clipPlateX = 7); // Raspberry Pi 4
+holderCorners(112, 116, 51, cornerCoverage = 14); // Intel NUC
 
 module holderCorners(
   contentX,
