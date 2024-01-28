@@ -12,7 +12,7 @@ thickness = 3;
 rounding = 3;
 
 // holderCorners(204, 158, 18.5); // TP-Link WiFi AP
-holderCorners(102, 158, 29.5 /* with pads */); // NetGear switch
+holderCorners(102, 158, 29.5 /* with pads */, printPackX2 = 4 /* slicer weirdness */); // NetGear switch
 // holderCorners(110, 57.5, 39, cornerCoverage = 10, clipPlateY = 23.5); // TP-Link WiFi AP power
 // holderCorners(60, 97, 16, cornerCoverage = 5.5, extraTopCoverage = 3.5); // TI LAUNCHXL-CC26X2R1 Zigbee controller
 // holderCorners(57, 85.5, 4, cornerCoverage = 2.5, extraTopCoverage = 5, clipHideY = 10, clipPlateY = 17, clipPlateX = 7); // Raspberry Pi 4
@@ -29,7 +29,8 @@ module holderCorners(
   clipPlateX = 10,
   clipPlateY = 20,
   printLayout = true,
-  printPackX = 8,
+  printPackX1 = 8,
+  printPackX2 = 1,
   printPackY = 1,
   printInterleave = true,
 ) {
@@ -38,16 +39,16 @@ module holderCorners(
     holderCornerAssembly("BL", contentX, contentY, contentZ, cornerCoverage, extraTopCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
     rotate([ 90, 0, 0 ])
-    translate([ -printPackX, 0, 0 ])
+    translate([ -printPackX1, 0, 0 ])
     holderCornerAssembly("BR", contentX, contentY, contentZ, cornerCoverage, extraTopCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-    translate(printInterleave ? [ clipX + 1, -15, 0 ] : [ 0, 0, 0 ])
+    translate(printInterleave ? [ clipX + printPackX2, -15, 0 ] : [ 0, 0, 0 ])
     translate([ 0, 35 + printPackY, 0 ])
     rotate([ -90, 0, 0 ])
     holderCornerAssembly("TL", contentX, contentY, contentZ, cornerCoverage, extraTopCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
 
-    translate(printInterleave ? [ clipX + 1, -15, 0 ] : [ 0, 0, 0 ])
-    translate([ -printPackX, 35 + printPackY, 0 ])
+    translate(printInterleave ? [ clipX + printPackX2, -15, 0 ] : [ 0, 0, 0 ])
+    translate([ -printPackX1, 35 + printPackY, 0 ])
     rotate([ -90, 0, 0 ])
     holderCornerAssembly("TR", contentX, contentY, contentZ, cornerCoverage, extraTopCoverage, clipHideX, clipHideY, clipPlateX, clipPlateY);
   } else {
