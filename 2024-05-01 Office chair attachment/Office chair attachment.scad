@@ -1,12 +1,12 @@
 $fn = $preview ? 35 : 75;
 
 tipThickness = 5;
-midThickness = 11;
-railGap = 5.5;
+midThickness = 11.75;
+railGap = 5;
 bottomWiden = 0;
 mainLen = 75;
 floorThick = 16;
-midRaise = floorThick + 15;
+midRaise = floorThick + 18;
 slopeBy = 44 - floorThick;
 
 difference() {
@@ -78,8 +78,8 @@ difference() {
   cube([ 50, 50, 100 ], center = true);
 
   // For test prints:
-  translate([ 0, mainLen / 2, 50 + 4 ])
-  cube([ 70, mainLen - 2, 100 ], center = true);
+  translate([ 0, mainLen / 2 - 1.5, 50 + 4 ])
+  #cube([ 70, mainLen - 2, 100 ], center = true);
   translate([ 0, mainLen / 2, 50 - 5 ])
   cube([ midThickness + railGap + bottomWiden * 2, mainLen - 8, 100 ], center = true);
 }
