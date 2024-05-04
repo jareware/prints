@@ -1,8 +1,8 @@
 $fn = $preview ? 35 : 75;
 
 tipThickness = 5;
-midThickness = 11.5;
-railGap = 4;
+midThickness = 11;
+railGap = 5.5;
 bottomWiden = 0;
 mainLen = 75;
 floorThick = 16;
