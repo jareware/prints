@@ -46,6 +46,12 @@ difference() {
 //   screws();
 // }
 
+// Mount:
+difference() {
+  mount();
+  screws();
+}
+
 module svg(body = false, parts = false) {
   scale([ svgScale, svgScale, 1 ])
   translate([ -104, 27.5, 0 ]) { // this is related to the SVG content, and thus not parametrizable
@@ -133,4 +139,37 @@ module screws() {
   rotate([ 0, 180, 0 ])
   translate([ (handlePlateD1 / 2 - (handlePlateD1 - handleD) / 2 / 2) * i * 1.15, 0, -bodyThickness + 2 ])
   screwHole("3.5 x 15 countersunk");
+}
+
+module mount() {
+  translate([ 0, handleMove, 0 ]) {
+    difference() {
+      union() {
+        color("darkgray")
+        resize([ handlePlateD1, handlePlateD2, handlePlateH ])
+        translate([ 0, 0, -handlePlateH ])
+        cylinder(h = handlePlateH, d = handlePlateD1);
+
+        color("green")
+        translate([ 20 / -2, 80 / -2, -handlePlateH ])
+        cube([ 20, 80, handlePlateH ]);
+      }
+
+      translate([ 0, 50, -handlePlateH - 5 ])
+      rotate([ 90, 0, 0 ])
+      cylinder(h = 100, d = 16);
+
+      #translate([ 0, -30 * 1, -18 ])
+      rotate([ 90, 0, 0 ])
+      rotate_extrude(convexity = 10)
+      translate([ 20, 0, 0 ])
+      circle(d = 7);
+
+      #translate([ 0, -30 * -1, -18 ])
+      rotate([ 90, 0, 0 ])
+      rotate_extrude(convexity = 10)
+      translate([ 20, 0, 0 ])
+      circle(d = 7);
+    }
+  }
 }
