@@ -4,7 +4,7 @@ use <../lib/roundedCube.scad>
 
 magic = 0.01;
 mainR = 10;
-minorR = 1;
+minorR = 1.5;
 deckX = 67;
 deckY = 27;
 deckZ = 93.5;
@@ -15,10 +15,11 @@ deckTopExpose = 12;
 wallBottom = 5;
 wallTop = 5;
 wallSide = 5;
-embedBottom = 2.5;
+embedBottom = 3.5;
 embedBottomX = deckX - 15;
 embedBottomY = deckY - 10;
 embedBottomZ = 10;
+embedLockBump = .75;
 
 bottom();
 translate([ 0, 0, 30 ]) // i.e. how much to open
@@ -49,7 +50,7 @@ module top() {
 
   // Embed for clipping into bottom:
   difference() {
-    clip();
+    clip(tolerance = .5);
 
     hull() {
       translate([ 0, 0, wallBottom + deckZ - deckTopExpose + magic ])
@@ -72,8 +73,18 @@ module content() {
 }
 
 module clip(tolerance = 0) {
-  translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ])
-  #roundedCube(embedBottomX, deckY + (embedBottom - tolerance) * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
-  translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ])
-  #roundedCube(deckX + (embedBottom - tolerance) * 2, embedBottomY, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+  translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ]) {
+    // X:
+    roundedCube(deckX + (embedBottom - tolerance) * 2, embedBottomY, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+
+    // Y:
+    roundedCube(embedBottomX, deckY + (embedBottom - tolerance) * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+
+    // Bump:
+    t = max(tolerance, 0);
+    for (i = [-1, 1])
+    translate([ (deckX / 2 + embedBottom - tolerance - embedLockBump * 1/3) * i, embedBottomY / 2 - minorR - t, embedBottomZ / 2 - tolerance ])
+    rotate([ 90, 0, 0 ])
+    cylinder(h = embedBottomY - minorR * 2 - t * 2, r = embedLockBump);
+  }
 }
