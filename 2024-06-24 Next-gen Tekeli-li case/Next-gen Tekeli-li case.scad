@@ -30,13 +30,10 @@ module bottom() {
     roundedCube(deckX + wallSide * 2, deckY + wallSide * 2, deckZ + wallBottom - deckTopExpose, r = mainR, flatTop = true, centerX = true, centerY = true);
 
     // Space for content:
-    #content();
+    content();
 
-    // Embed for inserting top:
-    translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic ])
-    roundedCube(embedBottomX, deckY + embedBottom * 2, embedBottomZ, r = minorR, flatTop = true, centerX = true, centerY = true);
-    translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic ])
-    roundedCube(deckX + embedBottom * 2, embedBottomY, embedBottomZ, r = minorR, flatTop = true, centerX = true, centerY = true);
+    // Space for clip from top:
+    clip();
   }
 }
 
@@ -48,8 +45,19 @@ module top() {
 
     // Space for content:
     content();
+  }
 
-    // TODO: Clips
+  // Embed for clipping into bottom:
+  difference() {
+    clip();
+
+    hull() {
+      translate([ 0, 0, wallBottom + deckZ - deckTopExpose + magic ])
+      cube([ deckX, deckY, magic ], center = true);
+
+      translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ ])
+      cube([ deckX + (embedBottom - minorR) * 2, deckY + (embedBottom - minorR) * 2, magic ], center = true);
+    }
   }
 }
 
@@ -61,4 +69,11 @@ module content() {
   // Space for matchbox:
   translate([ 0, 0, wallBottom + deckZ - magic ])
   roundedCube(matchboxX, matchboxY, matchboxZ, r = minorR, centerX = true, centerY = true, flatBottom = true);
+}
+
+module clip(tolerance = 0) {
+  translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ])
+  #roundedCube(embedBottomX, deckY + (embedBottom - tolerance) * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+  translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ])
+  #roundedCube(deckX + (embedBottom - tolerance) * 2, embedBottomY, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
 }
