@@ -5,7 +5,7 @@ use <../lib/roundedCube.scad>
 magic = 0.01;
 mainR = 10;
 minorR = 1.5;
-deckX = 67;
+deckX = 67 + 2;
 deckY = 27;
 deckZ = 93.5;
 matchboxX = 53;
@@ -16,14 +16,14 @@ wallBottom = 5;
 wallTop = 5;
 wallSide = 5;
 embedBottom = 3.5;
-embedBottomX = deckX - 15;
+embedBottomX = deckX - 25;
 embedBottomY = deckY - 10;
 embedBottomZ = 10;
 embedLockBump = .75;
 
 bottom();
-translate([ 0, 0, 30 ]) // i.e. how much to open
-top();
+// translate([ 0, 0, 30 ]) // i.e. how much to open
+// top();
 
 module bottom() {
   difference() {
@@ -50,7 +50,7 @@ module top() {
 
   // Embed for clipping into bottom:
   difference() {
-    clip(tolerance = .5);
+    clip(tolerance = 1.5);
 
     hull() {
       translate([ 0, 0, wallBottom + deckZ - deckTopExpose + magic ])
@@ -75,10 +75,10 @@ module content() {
 module clip(tolerance = 0) {
   translate([ 0, 0, wallBottom + deckZ - deckTopExpose - embedBottomZ + magic + tolerance ]) {
     // X:
-    roundedCube(deckX + (embedBottom - tolerance) * 2, embedBottomY, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+    roundedCube(deckX + (embedBottom - tolerance) * 2, embedBottomY - tolerance * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
 
     // Y:
-    roundedCube(embedBottomX, deckY + (embedBottom - tolerance) * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
+    roundedCube(embedBottomX - tolerance * 2, deckY + (embedBottom - tolerance) * 2, embedBottomZ - tolerance, r = minorR, flatTop = true, centerX = true, centerY = true);
 
     // Bump:
     t = max(tolerance, 0);
