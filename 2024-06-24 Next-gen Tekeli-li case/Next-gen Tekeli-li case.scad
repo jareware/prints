@@ -11,19 +11,19 @@ deckZ = 93.5;
 matchboxX = 53 + 2;
 matchboxY = 15.5 + 1;
 matchboxZ = 37 + 1;
-deckTopExpose = 12;
+deckTopExpose = 0;
 wallBottom = 5;
 wallTop = 5;
 wallSide = 5;
 embedBottom = 3.5;
-embedBottomX = deckX - 25;
+embedBottomX = deckX - 15;
 embedBottomY = deckY - 10;
-embedBottomZ = 10;
-embedLockBump = .75;
+embedBottomZ = 20;
+embedLockBump = 1.2;
 
-// bottom();
-translate([ 0, 0, 30 ]) // i.e. how much to open
-top();
+bottom();
+// translate([ 0, 0, 30 ]) // i.e. how much to open
+// top();
 
 module bottom() {
   difference() {
