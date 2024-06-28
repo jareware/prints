@@ -10,7 +10,7 @@ deckY = 27;
 deckZ = 93.5;
 matchboxX = 53 + 2;
 matchboxY = 15.5 + 1;
-matchboxZ = 37 + 1;
+matchboxZ = 15;
 deckTopExpose = 0;
 wallBottom = 5;
 wallTop = 5;
@@ -22,8 +22,10 @@ embedBottomZ = 20;
 embedLockBump = 1.2;
 
 bottom();
-// translate([ 0, 0, 30 ]) // i.e. how much to open
-// top();
+translate([ -15, 0, 30 ]) // i.e. how much to open
+top2Left();
+translate([ 15, 0, 30 ]) // i.e. how much to open
+top2Right();
 
 module bottom() {
   difference() {
@@ -43,14 +45,11 @@ module top() {
     // Main body:
     translate([ 0, 0, wallBottom + deckZ - deckTopExpose ])
     roundedCube(deckX + wallSide * 2, deckY + wallSide * 2, deckTopExpose + matchboxZ + wallTop, r = mainR, flatBottom = true, centerX = true, centerY = true);
-
-    // Space for content:
-    content();
   }
 
   // Embed for clipping into bottom:
   difference() {
-    clip(tolerance = .5);
+    clip(tolerance = .3);
 
     hull() {
       translate([ 0, 0, wallBottom + deckZ - deckTopExpose + magic ])
@@ -86,5 +85,68 @@ module clip(tolerance = 0) {
     translate([ (deckX / 2 + embedBottom - tolerance - embedLockBump * 1/3) * i, embedBottomY / 2 - minorR - t, embedBottomZ / 2 - tolerance ])
     rotate([ 90, 0, 0 ])
     cylinder(h = embedBottomY - minorR * 2 - t * 2, r = embedLockBump);
+  }
+}
+
+d1 = 16;
+d2 = 16;
+wall = 2;
+
+plugD = 8;
+plugX = 20;
+halvesTol = .25;
+
+
+module top2Right() {
+  plugTol = 0; // the holes are exactly sized
+
+  difference() {
+    intersection() {
+      top();
+      translate([ halvesTol, -50, 50 ])
+      cube([100, 100, 100]);
+    }
+
+    translate([ 0, 0, wallBottom + deckZ - deckTopExpose ]) {
+      translate([ matchboxX / -2, 0, d1 / 2 + wall ])
+      rotate([ 0, 90, 0 ])
+      resize([ d1, d2, matchboxX ])
+      cylinder(h = matchboxX, d = 1);
+
+      for (j = [-1, 1])
+      hull() {
+        for (i = [-1, 1])
+        translate([ plugX * i, 13 * j, matchboxZ / 2 + 2 ])
+        sphere(d = plugD - plugTol);
+      }
+    }
+  }
+}
+
+module top2Left() {
+  plugTol = .5; // shrink the plugs by a bit
+
+  difference() {
+    intersection() {
+      top();
+      translate([ -100 - halvesTol, -50, 50 ])
+      cube([100, 100, 100]);
+    }
+
+    translate([ 0, 0, wallBottom + deckZ - deckTopExpose ]) {
+      translate([ matchboxX / -2, 0, d1 / 2 + wall ])
+      rotate([ 0, 90, 0 ])
+      resize([ d1, d2, matchboxX ])
+      cylinder(h = matchboxX, d = 1);
+    }
+  }
+
+  translate([ 0, 0, wallBottom + deckZ - deckTopExpose ]) {
+    for (j = [-1, 1])
+    hull() {
+      for (i = [-1, 1])
+      translate([ plugX * i, 13 * j, matchboxZ / 2 + 2 ])
+      sphere(d = plugD - plugTol);
+    }
   }
 }
