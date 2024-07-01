@@ -10,7 +10,7 @@ deckY = 27;
 deckZ = 93.5;
 matchboxX = 53 + 2;
 matchboxY = 15.5 + 1;
-matchboxZ = 15;
+matchboxZ = 16;
 deckTopExpose = 0;
 wallBottom = 5;
 wallTop = 5;
@@ -88,14 +88,13 @@ module clip(tolerance = 0) {
   }
 }
 
-d1 = 16;
-d2 = 16;
+d1 = 18;
+d2 = 17;
 wall = 2;
 
-plugD = 8;
+plugD = 7;
 plugX = 20;
 halvesTol = .25;
-
 
 module top2Right() {
   plugTol = 0; // the holes are exactly sized
@@ -108,15 +107,18 @@ module top2Right() {
     }
 
     translate([ 0, 0, wallBottom + deckZ - deckTopExpose ]) {
-      translate([ matchboxX / -2, 0, d1 / 2 + wall ])
-      rotate([ 0, 90, 0 ])
-      resize([ d1, d2, matchboxX ])
-      cylinder(h = matchboxX, d = 1);
+      // %translate([ matchboxX / -2, 0, d1 / 2 + wall ])
+      // rotate([ 0, 90, 0 ])
+      // resize([ d1, d2, matchboxX ])
+      // cylinder(h = matchboxX, d = 1);
+
+      translate([ 0, 0, wall ])
+      roundedCube(matchboxX, d1, d2, r = minorR, centerX = true, centerY = true);
 
       for (j = [-1, 1])
       hull() {
         for (i = [-1, 1])
-        translate([ plugX * i, 13 * j, matchboxZ / 2 + 2 ])
+        translate([ plugX * i, 14 * j, matchboxZ / 2 + 2 ])
         sphere(d = plugD - plugTol);
       }
     }
@@ -124,7 +126,7 @@ module top2Right() {
 }
 
 module top2Left() {
-  plugTol = .5; // shrink the plugs by a bit
+  plugTol = .7; // shrink the plugs by a bit
 
   difference() {
     intersection() {
@@ -134,10 +136,13 @@ module top2Left() {
     }
 
     translate([ 0, 0, wallBottom + deckZ - deckTopExpose ]) {
-      translate([ matchboxX / -2, 0, d1 / 2 + wall ])
-      rotate([ 0, 90, 0 ])
-      resize([ d1, d2, matchboxX ])
-      cylinder(h = matchboxX, d = 1);
+      // translate([ matchboxX / -2, 0, d1 / 2 + wall ])
+      // rotate([ 0, 90, 0 ])
+      // resize([ d1, d2, matchboxX ])
+      // cylinder(h = matchboxX, d = 1);
+
+      translate([ 0, 0, wall ])
+      roundedCube(matchboxX, d1, d2, r = minorR, centerX = true, centerY = true);
     }
   }
 
@@ -145,7 +150,7 @@ module top2Left() {
     for (j = [-1, 1])
     hull() {
       for (i = [-1, 1])
-      translate([ plugX * i, 13 * j, matchboxZ / 2 + 2 ])
+      translate([ plugX * i, 14 * j, matchboxZ / 2 + 2 ])
       sphere(d = plugD - plugTol);
     }
   }
