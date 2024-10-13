@@ -12,7 +12,7 @@ backBumpY = 3;
 backBumpZ = 12.5;
 
 armThickness = 10;
-armReachOut = 25;
+armReachOut = 30;
 armReachOutSupport = 8;
 armReachUp = 35;
 armReachUpSupport = 6;
