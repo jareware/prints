@@ -20,12 +20,13 @@ hookD = 4;
 hookZ = 12;
 hookT = 1.5;
 
-fastenerX = 34;
-fastenerTopThickness = 4;
-fastenerTolerance = 1;
+fastenerX = 30;
+fastenerTopThickness = 4.5;
+fastenerTolerance = .3;
 
 // Main:
-!difference() {
+// !rotate([ 0, 90, 0 ]) // PRINT: "Vidga light strip hook"
+difference() {
   union() {
     // Rail grabber main body:
     roundedCube(mainX, railY + mainThickness * 2, railZ + mainThickness, r = mainR, centerX = true);
@@ -91,14 +92,15 @@ fastenerTolerance = 1;
   cube([ mainX + magic * 2, railY, railZ ]);
 }
 
-// Fastener:
+// Fastener (type 1):
+// !rotate([ 0, 180, 0 ]) // PRINT: "Vidga light strip hook - fastener 1"
 difference() {
   hull() {
     translate([ 0, mainThickness, railZ + mainThickness - backBumpZ ])
-    roundedCube(mainX + mainThickness * 2, railY + mainThickness + backBumpY - mainR, mainR, flatTop = true, flatFront = true, r = mainR, centerX = true);
+    roundedCube(mainX + mainThickness * 2, railY + mainThickness + backBumpY * .5, mainR, flatTop = true, flatFront = true, r = mainR, centerX = true);
 
     translate([ 0, mainThickness, railZ + mainThickness ])
-    roundedCube(fastenerX, railY + mainThickness + backBumpY - mainR, mainR, flatTop = true, flatFront = true, r = mainR, centerX = true);
+    roundedCube(fastenerX, railY + mainThickness + backBumpY * .5, fastenerTopThickness, flatTop = true, flatFront = true, r = mainR, centerX = true);
   }
 
   translate([ -magic - fastenerX / 2, mainThickness - magic, 0 ])
