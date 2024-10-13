@@ -8,30 +8,36 @@ mainR = mainThickness * .75;
 railY = 15;
 railZ = 22;
 mainX = 12; // this is effectively the "rail top clearance", the thing needs to fit between the ceiling & the rail, sideways, before rotating into place
-backBumpY = 7;
-backBumpZ = 15;
+backBumpY = 3;
+backBumpZ = 12.5;
 
 armThickness = 10;
 armReachOut = 25;
 armReachOutSupport = 8;
-armReachUp = 30;
+armReachUp = 35;
 armReachUpSupport = 6;
-hookD = 5;
-hookZ = -2.5;
+hookD = 4;
+hookZ = 12;
+hookT = 1.5;
 
 fastenerX = 34;
-fastenerTopThickness = 10;
-fastenerTolerance = .75;
+fastenerTopThickness = 4;
+fastenerTolerance = 1;
 
 // Main:
-difference() {
+!difference() {
   union() {
     // Rail grabber main body:
     roundedCube(mainX, railY + mainThickness * 2, railZ + mainThickness, r = mainR, centerX = true);
 
     // Rail grabber back bump (connects with fastener):
-    translate([ 0, railY + mainThickness, railZ + mainThickness - backBumpZ ])
-    roundedCube(mainX, backBumpY + mainThickness, backBumpZ, r = mainR, flatFront = true, centerX = true);
+    hull() {
+      translate([ 0, railY + mainThickness, railZ + mainThickness - backBumpZ ])
+      roundedCube(mainX, backBumpY + mainThickness, backBumpZ, r = mainR, flatFront = true, centerX = true);
+
+      translate([ 0, -0, railZ + mainThickness - armThickness - armReachOutSupport ])
+      roundedCube(mainX, railY + mainThickness * 2, armThickness + armReachOutSupport, r = mainR, centerX = true);
+    }
 
     // Arm reaching out:
     hull() {
@@ -43,8 +49,32 @@ difference() {
     }
 
     // Arm reaching up:
-    translate([ 0, -armReachOut - armThickness, railZ + mainThickness - armThickness ])
-    roundedCube(mainX, armThickness, armThickness + armReachUp, r = mainR, centerX = true);
+    translate([ 0, -armReachOut - armThickness, railZ + mainThickness - armThickness ]) {
+      hull() {
+        roundedCube(mainX, armThickness, armThickness + armReachUp, r = mainR, centerX = true, flatTop = true);
+
+        translate([ 0, armThickness / 2, armReachUp + armThickness ])
+        cube([ mainX, armThickness, magic ], center = true);
+      }
+
+      // Cable clip:
+      union() {
+        translate([ mainX / -2, hookD / 2, armReachUp + armThickness + hookZ ])
+        rotate([ 0, 90, 0 ])
+        cylinder(h = mainX, d = hookD);
+
+        translate([ mainX / -2, hookD / -2 + armThickness, armReachUp + armThickness + hookZ ])
+        rotate([ 0, 90, 0 ])
+        cylinder(h = mainX, d = hookD);
+
+        translate([ 0, armThickness / 2, armReachUp + armThickness + hookZ / 2 ]) {
+          difference() {
+            cube([ mainX, armThickness, hookZ ], center = true);
+            cube([ mainX + magic, (armThickness - hookT * 2), hookZ + magic * 2 ], center = true);
+          }
+        }
+      }
+    }
 
     // Up reaching arm support:
     hull() {
@@ -59,17 +89,17 @@ difference() {
   // Cut out space for the rail:
   translate([ -magic - mainX / 2, mainThickness, 0 ])
   cube([ mainX + magic * 2, railY, railZ ]);
-
-  // Hook that holds onto the wire:
-  translate([ -magic - mainX / 2, -armReachOut - armThickness / 2, railZ + mainThickness + armReachUp + hookZ ])
-  rotate([ 0, 90, 0 ])
-  cylinder(h = mainX + magic * 2, d = hookD);
 }
 
 // Fastener:
 difference() {
-  translate([ 0, mainThickness, railZ + mainThickness - backBumpZ ])
-  roundedCube(fastenerX, railY + mainThickness + backBumpY - mainR, backBumpZ + fastenerTopThickness, flatTop = true, flatFront = true, r = mainR, centerX = true);
+  hull() {
+    translate([ 0, mainThickness, railZ + mainThickness - backBumpZ ])
+    roundedCube(mainX + mainThickness * 2, railY + mainThickness + backBumpY - mainR, mainR, flatTop = true, flatFront = true, r = mainR, centerX = true);
+
+    translate([ 0, mainThickness, railZ + mainThickness ])
+    roundedCube(fastenerX, railY + mainThickness + backBumpY - mainR, mainR, flatTop = true, flatFront = true, r = mainR, centerX = true);
+  }
 
   translate([ -magic - fastenerX / 2, mainThickness - magic, 0 ])
   cube([ fastenerX + magic * 2, railY, railZ ]);
