@@ -29,7 +29,7 @@ difference() {
   translate([ 0, 0, 18 / -2 ])
   cube([ 200, 200, 18 ], center = true);
 
-  translate([ 7, 12, -16 ]) screwHole("4.0 x 40 pan head countersunk");
-  translate([ 7, mainLen - 12, -16 ]) screwHole("4.0 x 40 pan head countersunk");
-  translate([ supportExtrudeX - 5, supportExtrudeY - 2, -15 ]) screwHole("3.5 x 20 countersunk");
+  translate([ 7, 12, -16 ]) screwHole("4.0 x 40 pan head countersunk", alignedAtHead = false);
+  translate([ 7, mainLen - 12, -16 ]) screwHole("4.0 x 40 pan head countersunk", alignedAtHead = false);
+  translate([ supportExtrudeX - 5, supportExtrudeY - 2, -15 ]) screwHole("3.5 x 20 countersunk", alignedAtHead = false);
 }

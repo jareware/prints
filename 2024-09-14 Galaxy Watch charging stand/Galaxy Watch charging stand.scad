@@ -36,13 +36,13 @@ module main() {
       rotate([ -90, 0, 0 ])
       stand();
     }
-    
+
     translate([ 0, 0, -magic ])
     cutout();
-      
+
     for (x = [ -1, 1 ])
     translate([ x * 3.5 * 2, 0, -chargingPlateT - 15 ])
-    screwHole("3.5 x 15 countersunk");
+    screwHole("3.5 x 15 countersunk", alignedAtHead = false);
   }
 
   // // Sanity check position where clasp should rest
@@ -55,7 +55,7 @@ module cutout() {
 
   translate([ 0, 0, -chargingPlateT + magic ])
   cylinder(h = chargingPlateT, d = chargingPlateD);
-  
+
   hull() {
     translate([ 0, 0, -chargingPlateT + chargingCordD / 2 + magic ])
     rotate([ 90, 0, 0 ])
@@ -106,7 +106,7 @@ module stand() {
     translate([ standX / -2, chargingPlateT + mainT + standY / 2 - slitY / 2, -standZ + standR ])
     cube([ standX, slitY, slitZ ]);
   }
-  
+
   translate([ 0, chargingPlateT + mainT, watchBodyD / -2 + claspRestZ ])
   roundedCube(claspRestX, claspRestY, standR, r = standR, centerX = true, flatFront = true, flatTop = true);
 }

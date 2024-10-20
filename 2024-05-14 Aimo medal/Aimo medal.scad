@@ -125,10 +125,10 @@ module handle() {
       }
 
       translate([ 0, -handleMove - handleScrewMove1, -handleScrewSink ])
-      screwHole("3.5 x 15 countersunk");
+      screwHole("3.5 x 15 countersunk", alignedAtHead = false);
 
       translate([ 0, -handleMove + handleScrewMove2, -handleScrewSink ])
-      screwHole("3.5 x 15 countersunk");
+      screwHole("3.5 x 15 countersunk", alignedAtHead = false);
     }
   }
 }
@@ -138,7 +138,7 @@ module screws() {
   for (i = [-1, 1])
   rotate([ 0, 180, 0 ])
   translate([ (handlePlateD1 / 2 - (handlePlateD1 - handleD) / 2 / 2) * i * 1.15, 0, -bodyThickness + 2 ])
-  screwHole("3.5 x 15 countersunk");
+  screwHole("3.5 x 15 countersunk", alignedAtHead = false);
 }
 
 module mount() {
